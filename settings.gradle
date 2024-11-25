@@ -9,4 +9,5 @@ rootProject.name = 'gym-crm-microservices'
 include 'trainer-hours-service'
 include 'gateway-service'
 include 'config-service'
+include 'discovery-service'
 
