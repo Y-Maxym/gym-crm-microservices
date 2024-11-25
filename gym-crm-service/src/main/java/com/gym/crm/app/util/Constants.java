@@ -1,0 +1,54 @@
+package com.gym.crm.app.util;
+
+public class Constants {
+
+    public static final String INFO_FACADE_INPUT = "INFO.FACADE.INPUT";
+    public static final String INFO_FACADE_RESULT = "INFO.FACADE.RESULT";
+    public static final String INFO_FACADE_EXCEPTION = "INFO.FACADE.EXCEPTION";
+
+    public static final String INFO_SERVICE_INPUT = "INFO.SERVICE.INPUT";
+    public static final String INFO_SERVICE_RESULT = "INFO.SERVICE.RESULT";
+    public static final String INFO_SERVICE_EXCEPTION = "INFO.SERVICE.EXCEPTION";
+
+    public static final String INFO_REPOSITORY_INPUT = "INFO.REPOSITORY.INPUT";
+    public static final String INFO_REPOSITORY_RESULT = "INFO.REPOSITORY.RESULT";
+    public static final String INFO_REPOSITORY_EXCEPTION = "INFO.REPOSITORY.EXCEPTION";
+
+    public static final String INFO_TRANSACTION_FILTER_START = "INFO.TRANSACTION.FILTER.START";
+    public static final String INFO_TRANSACTION_FILTER_END = "INFO.TRANSACTION.FILTER.END";
+
+    public static final String INFO_REST_LOGGING_FILTER_REQUEST = "INFO.REST.LOGGING.FILTER.REQUEST";
+    public static final String INFO_REST_LOGGING_FILTER_RESPONSE = "INFO.REST.LOGGING.FILTER.RESPONSE";
+
+    public static final String DEBUG_FACADE_INPUT = "DEBUG.FACADE.INPUT";
+    public static final String DEBUG_FACADE_RESULT = "DEBUG.FACADE.RESULT";
+    public static final String DEBUG_FACADE_EXCEPTION = "DEBUG.FACADE.EXCEPTION";
+
+    public static final String DEBUG_SERVICE_INPUT = "DEBUG.SERVICE.INPUT";
+    public static final String DEBUG_SERVICE_RESULT = "DEBUG.SERVICE.RESULT";
+    public static final String DEBUG_SERVICE_EXCEPTION = "DEBUG.SERVICE.EXCEPTION";
+
+    public static final String DEBUG_REPOSITORY_INPUT = "DEBUG.REPOSITORY.INPUT";
+    public static final String DEBUG_REPOSITORY_RESULT = "DEBUG.REPOSITORY.RESULT";
+    public static final String DEBUG_REPOSITORY_EXCEPTION = "DEBUG.REPOSITORY.EXCEPTION";
+
+    public static final String ERROR_TRAINEE_WITH_ID_NOT_FOUND = "ERROR.TRAINEE.WITH.ID.NOT.FOUND";
+    public static final String ERROR_TRAINER_WITH_ID_NOT_FOUND = "ERROR.TRAINER.WITH.ID.NOT.FOUND";
+    public static final String ERROR_TRAINING_WITH_ID_NOT_FOUND = "ERROR.TRAINING.WITH.ID.NOT.FOUND";
+    public static final String ERROR_USER_WITH_ID_NOT_FOUND = "ERROR.USER.WITH.ID.NOT.FOUND";
+
+    public static final String ERROR_USER_WITH_USERNAME_NOT_FOUND = "ERROR.USER.WITH.USERNAME.NOT.FOUND";
+    public static final String ERROR_TRAINER_WITH_USERNAME_NOT_FOUND = "ERROR.TRAINER.WITH.USERNAME.NOT.FOUND";
+    public static final String ERROR_TRAINEE_WITH_USERNAME_NOT_FOUND = "ERROR.TRAINEE.WITH.USERNAME.NOT.FOUND";
+
+    public static final String ERROR_TRAINING_TYPE_WITH_NAME_NOT_FOUND = "ERROR.TRAINING.TYPE.WITH.NAME.NOT.FOUND";
+
+    public static final String WARN_TRAINEE_WITH_ID_NOT_FOUND = "WARN.TRAINEE.WITH.ID.NOT.FOUND";
+    public static final String WARN_USER_WITH_ID_NOT_FOUND = "WARN.USER.WITH.ID.NOT.FOUND";
+
+    public static final String WARN_TRAINEE_WITH_USERNAME_NOT_FOUND = "WARN.TRAINEE.WITH.USERNAME.NOT.FOUND";
+
+    public static final String ERROR_ENTITY_ID_CANNOT_BE_NULL = "ERROR.ENTITY.ID.CANNOT.BE.NULL";
+    public static final String ERROR_ENTITY_ID_CANNOT_BE_ZERO = "ERROR.ENTITY.ID.CANNOT.BE.ZERO";
+    public static final String ERROR_ENTITY_CANNOT_BE_NULL = "ERROR.ENTITY.CANNOT.BE.NULL";
+}

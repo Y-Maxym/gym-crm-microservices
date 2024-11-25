@@ -1,0 +1,745 @@
+{
+	"info": {
+		"_postman_id": "924b6b4c-273b-40d3-8a3a-0abf887a8792",
+		"name": "gym-crm-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33298427"
+	},
+	"item": [
+		{
+			"name": "trainee",
+			"item": [
+				{
+					"name": "Get Trainee Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainees/John.Doe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainees",
+								"John.Doe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Trainee",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainees/John.Doe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainees",
+								"John.Doe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Trainee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"dateOfBirth\": \"2000-01-01\",\r\n    \"address\": \"W.st.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainees/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainees",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Trainee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"dateOfBirth\": \"1998-01-01\",\r\n    \"address\": \"address\",\r\n    \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainees/John.Doe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainees",
+								"John.Doe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Trainee's Trainer List",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"username\": \"David.Brown\"\r\n  },\r\n  {\r\n    \"username\": \"Emily.Davis\"\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainees/John.Doe/trainers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainees",
+								"John.Doe",
+								"trainers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "trainer",
+			"item": [
+				{
+					"name": "Create Trainer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"William\",\r\n    \"lastName\": \"Turner\",\r\n    \"specialization\": \"Yoga\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainers/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainers",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trainer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainers/David.Brown",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainers",
+								"David.Brown"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trainers Not Assigned",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainers/not-assigned/Name.Surname",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainers",
+								"not-assigned",
+								"Name.Surname"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Trainer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"David\",\r\n  \"lastName\": \"Brown\",\r\n  \"specialization\": \"Yoga\",\r\n  \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainers/David.Brown",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainers",
+								"David.Brown"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "trainings",
+			"item": [
+				{
+					"name": "Get Trainee Trainings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainings/trainees/John.Doe?periodFrom=2000-01-01&periodTo=2020-01-01&profileName=Emily&trainingType=Fitness",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainings",
+								"trainees",
+								"John.Doe"
+							],
+							"query": [
+								{
+									"key": "periodFrom",
+									"value": "2000-01-01"
+								},
+								{
+									"key": "periodTo",
+									"value": "2020-01-01"
+								},
+								{
+									"key": "profileName",
+									"value": "Emily"
+								},
+								{
+									"key": "trainingType",
+									"value": "Fitness"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trainer Trainings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainings/trainers/David.Brown?periodFrom=2020-01-02&periodTo=2020-01-03&profileName=Jane",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainings",
+								"trainers",
+								"David.Brown"
+							],
+							"query": [
+								{
+									"key": "periodFrom",
+									"value": "2020-01-02"
+								},
+								{
+									"key": "periodTo",
+									"value": "2020-01-03"
+								},
+								{
+									"key": "profileName",
+									"value": "Jane"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Training",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"traineeUsername\": \"John.Doe\",\r\n  \"trainerUsername\": \"William.Turnesr\",\r\n  \"trainingName\": \"Training 1\",\r\n  \"trainingDate\": \"2023-09-01\",\r\n  \"trainingDuration\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/trainings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"trainings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "training-types",
+			"item": [
+				{
+					"name": "Get Training Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/training-types",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"training-types"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var auth = pm.response.headers.get(\"Authorization\");\r",
+									"pm.collectionVariables.set(\"Authorization\", auth);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var auth = pm.response.headers.get(\"Authorization\");\r",
+									"pm.collectionVariables.set(\"Authorization\", auth);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var auth = pm.response.headers.get(\"Authorization\");\r",
+									"pm.collectionVariables.set(\"Authorization\", auth);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"John.Doe\",\r\n  \"password\": \"password\",\r\n  \"newPassword\": \"new\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/change-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate/Deactivate Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"isActive\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/{{version}}/John.Doe/activate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"{{version}}",
+								"John.Doe",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "actuator",
+			"item": [
+				{
+					"name": "Application Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prometheus Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/prometheus",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"prometheus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Api docs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/v1/api-docs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "Authorization",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

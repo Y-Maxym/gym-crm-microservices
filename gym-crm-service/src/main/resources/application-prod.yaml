@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+
+logging:
+  threshold:
+    file: warn
+  level:
+    com.gym.crm.app: info
+    root: warn
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-19 create jwt black list table
+      author: maksym
+      changes:
+        - createTable:
+            tableName: jwt_black_list
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiry_date
+                  type: timestamp
+                  constraints:
+                    nullable: false

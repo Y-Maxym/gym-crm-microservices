@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-2 update non-nullable columns
+      author: maxym
+      comment: Update nullable columns
+      changes:
+        - dropNotNullConstraint:
+            tableName: trainer
+            columnName: specialization
+
+        - dropNotNullConstraint:
+            tableName: training
+            columnName: trainee_id
+
+        - dropNotNullConstraint:
+            tableName: training
+            columnName: trainer_id
+
+        - dropNotNullConstraint:
+            tableName: training
+            columnName: training_type_id
+
+  - changeSet:
+      id: GCA-2 update cascade operations
+      author: maxym
+      comment: Update cascade operation
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: trainee
+            constraintName: fk_trainee_user
+        - addForeignKeyConstraint:
+            constraintName: fk_trainee_user
+            baseTableName: trainee
+            baseColumnNames: user_id
+            referencedTableName: user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: trainer
+            constraintName: fk_trainer_user
+        - addForeignKeyConstraint:
+            constraintName: fk_trainer_user
+            baseTableName: trainer
+            baseColumnNames: user_id
+            referencedTableName: user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: training
+            constraintName: fk_training_trainee
+        - addForeignKeyConstraint:
+            constraintName: fk_training_trainee
+            baseTableName: training
+            baseColumnNames: trainee_id
+            referencedTableName: trainee
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - dropForeignKeyConstraint:
+            baseTableName: training
+            constraintName: fk_training_trainer
+        - addForeignKeyConstraint:
+            constraintName: fk_training_trainer
+            baseTableName: training
+            baseColumnNames: trainer_id
+            referencedTableName: trainer
+            referencedColumnNames: id
+            onDelete: CASCADE

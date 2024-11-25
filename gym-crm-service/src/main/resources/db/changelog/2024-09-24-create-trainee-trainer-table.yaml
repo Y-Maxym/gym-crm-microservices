@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-5 create trainee_trainer table
+      author: maxym
+      comment: Create trainee_trainer table
+      changes:
+        - createTable:
+            tableName: trainee_trainer
+            columns:
+              - column:
+                  name: trainee_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trainer_id
+                  type: bigint
+                  constraints:
+                    nullable: false

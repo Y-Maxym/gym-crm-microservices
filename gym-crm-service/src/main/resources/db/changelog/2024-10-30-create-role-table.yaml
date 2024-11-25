@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-17-create-role-table
+      author: maksym
+      changes:
+        - createTable:
+            tableName: role
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+        - addUniqueConstraint:
+            tableName: role
+            schemaName: public
+            columnNames: role
+            constraintName: unique_role_role
+        - createIndex:
+            tableName: role
+            schemaName: public
+            indexName: idx_role_role
+            unique: true
+            columns:
+              - column:
+                  name: role

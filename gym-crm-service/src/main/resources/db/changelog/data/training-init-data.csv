@@ -1,0 +1,4 @@
+trainee_id,trainer_id,training_name,training_type_id,training_date,training_duration
+1,1,Training Emily Davis,1,2020-01-01,2
+2,2,Training David Brown,1,2020-01-02,2
+3,2,Training David Brown,2,2020-01-03,2

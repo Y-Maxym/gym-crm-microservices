@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-5 add foreign keys
+      author: maxym
+      comment: Add foreign keys
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_trainee_trainer_trainee
+            baseTableName: trainee_trainer
+            baseColumnNames: trainee_id
+            referencedTableName: trainee
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            constraintName: fk_trainee_trainer_trainer
+            baseTableName: trainee_trainer
+            baseColumnNames: trainer_id
+            referencedTableName: trainer
+            referencedColumnNames: id
+            onDelete: CASCADE

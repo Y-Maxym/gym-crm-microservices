@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-1 create trainer table table
+      author: maxym
+      comment: Create trainer table
+      changes:
+        - createTable:
+            tableName: trainer
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: specialization
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false

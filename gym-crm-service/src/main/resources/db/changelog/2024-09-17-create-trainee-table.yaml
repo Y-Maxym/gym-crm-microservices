@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-1 create trainee table
+      author: maxym
+      comment: Create trainee table
+      changes:
+        - createTable:
+            tableName: trainee
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: date_of_birth
+                  type: date
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: address
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false

@@ -1,0 +1,101 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-1 init training type table
+      author: maxym
+      comment: Init training type data
+      changes:
+        - loadData:
+            file: db/changelog/data/training-type-init-data.csv
+            tableName: training_type
+            columns:
+              - column:
+                  name: training_type_name
+                  header: training_type_name
+
+  - changeSet:
+      id: GCA-1 init user table
+      author: maxym
+      comment: Init user data
+      changes:
+        - loadData:
+            file: db/changelog/data/user-init-data.csv
+            tableName: user
+            columns:
+              - column:
+                  name: first_name
+                  header: first_name
+              - column:
+                  name: last_name
+                  header: last_name
+              - column:
+                  name: username
+                  header: username
+              - column:
+                  name: password
+                  header: password
+              - column:
+                  name: is_active
+                  header: is_active
+
+  - changeSet:
+      id: GCA-1 init trainee table
+      author: maxym
+      comment: Init trainee data
+      changes:
+        - loadData:
+            file: db/changelog/data/trainee-init-data.csv
+            tableName: trainee
+            columns:
+              - column:
+                  name: date_of_birth
+                  header: date_of_birth
+              - column:
+                  name: address
+                  header: address
+              - column:
+                  name: user_id
+                  header: user_id
+
+  - changeSet:
+      id: GCA-1 init trainer table
+      author: maxym
+      comment: Init trainer data
+      changes:
+        - loadData:
+            file: db/changelog/data/trainer-init-data.csv
+            tableName: trainer
+            columns:
+              - column:
+                  name: specialization
+                  header: specialization
+              - column:
+                  name: user_id
+                  header: user_id
+
+  - changeSet:
+      id: GCA-1 init training table
+      author: maxym
+      comment: Init training data
+      changes:
+        - loadData:
+            file: db/changelog/data/training-init-data.csv
+            tableName: training
+            columns:
+              - column:
+                  name: trainee_id
+                  header: trainee_id
+              - column:
+                  name: trainer_id
+                  header: trainer_id
+              - column:
+                  name: training_name
+                  header: training_name
+              - column:
+                  name: training_type_id
+                  header: training_type_id
+              - column:
+                  name: training_date
+                  header: training_date
+              - column:
+                  name: training_duration
+                  header: training_duration

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-10 Drop serial sequence
+      author: admin
+      changes:
+        - dropSequence:
+            schemaName: public
+            sequenceName: serial_number_seq

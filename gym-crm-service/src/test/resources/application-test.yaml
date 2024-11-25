@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: gym-crm-app
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: public
+    enabled: true
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+security:
+  password:
+    length: 10

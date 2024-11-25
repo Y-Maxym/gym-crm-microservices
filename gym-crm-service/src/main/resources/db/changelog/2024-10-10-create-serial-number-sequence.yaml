@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-7 Create serial sequence
+      author: maxym
+      changes:
+        - createSequence:
+            schemaName: public
+            sequenceName: serial_number_seq
+            startValue: 1
+            incrementBy: 1

@@ -1,0 +1,12 @@
+logging:
+  threshold:
+    file: warn
+  level:
+    com.gym.crm.app: debug
+    root: info
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

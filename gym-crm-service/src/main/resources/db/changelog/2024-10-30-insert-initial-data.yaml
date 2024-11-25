@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-17 init role table
+      author: maksym
+      comment: Init role data
+      changes:
+        - loadData:
+            file: db/changelog/data/role-init-data.csv
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  header: id
+              - column:
+                  name: role
+                  header: role
+        - loadData:
+            file: db/changelog/data/2024-30-10-user-init-data.csv
+            tableName: user
+            columns:
+              - column:
+                  name: first_name
+                  header: first_name
+              - column:
+                  name: last_name
+                  header: last_name
+              - column:
+                  name: username
+                  header: username
+              - column:
+                  name: password
+                  header: password
+              - column:
+                  name: is_active
+                  header: is_active
+        - loadData:
+            file: db/changelog/data/user-role-init-date.csv
+            tableName: user_role
+            columns:
+              - column:
+                  name: user_id
+                  header: user_id
+              - column:
+                  name: role_id
+                  header: role_id

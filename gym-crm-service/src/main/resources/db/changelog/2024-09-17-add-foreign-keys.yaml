@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-1 add foreign keys
+      author: maxym
+      comment: Add foreign keys
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_trainee_user
+            baseTableName: trainee
+            baseColumnNames: user_id
+            referencedTableName: user
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_trainer_user
+            baseTableName: trainer
+            baseColumnNames: user_id
+            referencedTableName: user
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_trainer_training_type
+            baseTableName: trainer
+            baseColumnNames: specialization
+            referencedTableName: training_type
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_training_trainee
+            baseTableName: training
+            baseColumnNames: trainee_id
+            referencedTableName: trainee
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_training_trainer
+            baseTableName: training
+            baseColumnNames: trainer_id
+            referencedTableName: trainer
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_training_training_type
+            baseTableName: training
+            baseColumnNames: training_type_id
+            referencedTableName: training_type
+            referencedColumnNames: id

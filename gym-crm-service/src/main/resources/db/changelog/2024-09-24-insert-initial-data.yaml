@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: GCA-5 init trainee_trainer table
+      author: maxym
+      comment: Init trainee_trainer data
+      changes:
+        - loadData:
+            file: db/changelog/data/trainee-trainer-init-data.csv
+            tableName: trainee_trainer
+            columns:
+              - column:
+                  name: trainee_id
+                  header: trainee_id
+              - column:
+                  name: trainer_id
+                  header: trainer_id

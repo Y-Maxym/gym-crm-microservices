@@ -1,0 +1,1082 @@
+openapi: 3.0.3
+info:
+  title: Gym CRM App API
+  version: 1.0.0
+  description: |
+    API for managing trainees and trainers, including registration, profiles, and trainings.
+    - 1.0.0 added endpoints for basic operations
+servers:
+  - url: https://localhost:8080/api/v1
+    description: Local development environment
+tags:
+  - name: Trainees
+    description: Trainee endpoints
+  - name: Trainers
+    description: Trainers endpoints
+  - name: Trainings
+    description: Trainers endpoints
+  - name: Training Types
+    description: Training Types endpoints
+  - name: Auth
+    description: Auth endpoints
+paths:
+  /trainees/register:
+    post:
+      tags:
+        - Trainees
+      summary: Register a new trainee
+      description: Register a new trainee
+      operationId: registerTrainee
+      requestBody:
+        description: Register a new trainee in the gym
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TraineeCreateRequest'
+      responses:
+        200:
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCredentials'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainers/register:
+    post:
+      tags:
+        - Trainers
+      summary: Register a new trainer
+      description: Register a new trainer
+      operationId: registerTrainer
+      requestBody:
+        description: Register a new trainer in the gym
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainerCreateRequest'
+      responses:
+        200:
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCredentials'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: Login
+      operationId: login
+      requestBody:
+        required: true
+        description: Login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+      responses:
+        200:
+          description: Successful login
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /change-password:
+    put:
+      tags:
+        - Auth
+      summary: Change login password
+      description: Change login password
+      operationId: changeLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        200:
+          description: Successful password change
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainees/{username}:
+    get:
+      tags:
+        - Trainees
+      summary: Get trainee profile
+      description: Returns a trainee profile
+      operationId: getTraineeProfile
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      responses:
+        200:
+          description: Successful retrieval of trainee profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTraineeProfileResponse'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Trainees
+      summary: Update trainee profile
+      description: Update trainee profile
+      operationId: updateTrainee
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTraineeProfileRequest'
+      responses:
+        200:
+          description: Successful update of trainee profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateTraineeProfileResponse"
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Trainees
+      summary: Delete trainee profile
+      description: Delete trainee profile
+      operationId: deleteTrainee
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      responses:
+        200:
+          description: Successful deletion of trainee profile
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainers/{username}:
+    get:
+      tags:
+        - Trainers
+      summary: Get trainer profile
+      description: Get trainer profile
+      operationId: getTrainerProfile
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      responses:
+        200:
+          description: Successful retrieval of trainer profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTrainerProfileResponse'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Trainers
+      summary: Update trainer profile
+      description: Update trainer profile
+      operationId: updateTrainer
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTrainerProfileRequest'
+      responses:
+        200:
+          description: Successful update of trainer profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateTrainerProfileResponse'
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainers/not-assigned/{username}:
+    get:
+      tags:
+        - Trainers
+      summary: Get not assigned to trainee active trainers
+      description: Get not assigned to trainee active trainers
+      operationId: getNotAssignedTrainersToTrainee
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      responses:
+        200:
+          description: Successful retrieval of active trainers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrainerProfileWithUsername'
+                example:
+                  - username: Jane.Smith
+                    firstName: Jane
+                    lastName: Smith
+                    specialization: Yoga
+                  - username: David.Rock
+                    firstName: David
+                    lastName: Rock
+                    specialization: Fitness
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainees/{username}/trainers:
+    put:
+      tags:
+        - Trainees
+      summary: Update trainee's trainer list
+      description: Update trainee's trainer list
+      operationId: updateTraineesTrainer
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/TrainerProfileOnlyUsername"
+              example:
+                - username: William.Turner
+                - username: Jane.Smith
+      responses:
+        200:
+          description: Successful update of trainee's trainer list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrainerProfileWithUsername"
+                example:
+                  - username: William.Turner
+                    firstName: William
+                    lastName: Turner
+                    specialization: Fitness
+                  - username: Jane.Smith
+                    firstName: Jane
+                    lastName: Smith
+                    specialization: Yoga
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainings/trainees/{username}:
+    get:
+      tags:
+        - Trainings
+      summary: Get trainee trainings list
+      description: Get trainee trainings list
+      operationId: getTraineeTrainings
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+        - $ref: "#/components/parameters/FromDateParam"
+        - $ref: "#/components/parameters/ToDateParam"
+        - $ref: "#/components/parameters/NameParam"
+        - $ref: "#/components/parameters/TrainingTypeParam"
+      responses:
+        200:
+          description: Successful retrieval of trainings list
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/GetTraineeTrainingsResponse"
+              example:
+                - trainingName: Training 1
+                  trainingDate: 2021-09-12
+                  trainingType: Yoga
+                  trainingDuration: 2
+                  trainerName: William
+                - trainingName: Training 2
+                  trainingDate: 2021-09-13
+                  trainingType: Yoga
+                  trainingDuration: 2
+                  trainerName: Jane
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainings/trainers/{username}:
+    get:
+      tags:
+        - Trainings
+      summary: Get trainer trainings list
+      description: Get trainer trainings list
+      operationId: getTrainerTrainings
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+        - $ref: "#/components/parameters/FromDateParam"
+        - $ref: "#/components/parameters/ToDateParam"
+        - $ref: "#/components/parameters/NameParam"
+      responses:
+        200:
+          description: Successful retrieval of trainer trainings list
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/GetTrainerTrainingsResponse"
+              example:
+                - trainingName: Training 1
+                  trainingDate: 2021-09-12
+                  trainingType: Yoga
+                  trainingDuration: 2
+                  traineeName: John
+                - trainingName: Training 2
+                  trainingDate: 2021-09-13
+                  trainingType: Yoga
+                  trainingDuration: 2
+                  traineeName: Dave
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /trainings:
+    post:
+      tags:
+        - Trainings
+      summary: Add training
+      description: Add training
+      operationId: addTraining
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddTrainingRequest"
+      responses:
+        200:
+          description: Training added successfully
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /{username}/activate:
+    patch:
+      tags:
+        - Trainees
+        - Trainers
+      summary: Activate/De-Activate profile
+      description: Activate/De-Activate profile
+      operationId: activate-deactivate-profile
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActivateDeactivateProfileRequest"
+      responses:
+        200:
+          description: Successful activation/deactivation of user profile
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /training-types:
+    get:
+      tags:
+        - Training Types
+      summary: Get training types
+      responses:
+        200:
+          description: Successful retrieval of training types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GetTrainingTypeResponse"
+                example:
+                  - trainingTypeId: 1
+                    trainingType: Fitness
+                  - trainingTypeId: 2
+                    trainingType: Yoga
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# Components list
+components:
+  schemas:
+    TraineeCreateRequest:
+      allOf:
+        - $ref: "#/components/schemas/TraineeProfile"
+      example:
+        firstName: John
+        lastName: Doe
+        dateOfBirth: 2000-01-01
+        address: W.st.
+    GetTraineeProfileResponse:
+      allOf:
+        - $ref: "#/components/schemas/TraineeProfile"
+      properties:
+        isActive:
+          type: boolean
+        trainersList:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainerProfileWithUsername"
+    UpdateTraineeProfileRequest:
+      allOf:
+        - $ref: "#/components/schemas/TraineeProfile"
+      properties:
+        isActive:
+          type: boolean
+      example:
+        firstName: Dave
+        lastName: Jones
+        dateOfBirth: 1999-01-01
+        address: newAddress
+        isActive: false
+    UpdateTraineeProfileResponse:
+      allOf:
+        - $ref: "#/components/schemas/TraineeProfile"
+      properties:
+        username:
+          type: string
+        isActive:
+          type: boolean
+        trainersList:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainerProfileWithUsername"
+      example:
+        username: Dave.Jones
+        firstName: Dave
+        lastName: Jones
+        dateOfBirth: 1999-01-01
+        address: newAddress
+        isActive: false
+        trainersList:
+          - username: Jane.Smith
+            firstName: Jane
+            lastName: Smith
+            specialization: Yoga
+          - username: William.Turner
+            firstName: William
+            lastName: Turner
+            specialization: Fitness
+    TraineeProfile:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        address:
+          type: string
+    TrainerTraineeProfileResponse:
+      properties:
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+    TrainerCreateRequest:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/TrainerProfile"
+      example:
+        firstName: John
+        lastName: Doe
+        specialization: Fitness
+    GetTrainerProfileResponse:
+      allOf:
+        - $ref: "#/components/schemas/TrainerProfile"
+      properties:
+        isActive:
+          type: boolean
+        traineesList:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainerTraineeProfileResponse"
+      example:
+        firstName: Jane
+        lastName: Smith
+        specialization: Yoga
+        isActive: true
+        traineesList:
+          - username: John.Doe
+            firstName: John
+            lastName: Doe
+          - username: Dave.Jones
+            firstName: Dave
+            lastName: Jones
+    UpdateTrainerProfileRequest:
+      allOf:
+        - $ref: "#/components/schemas/TrainerProfile"
+      properties:
+        isActive:
+          type: boolean
+      example:
+        firstName: William
+        lastName: Turner
+        specialization: Fitness
+        isActive: true
+    UpdateTrainerProfileResponse:
+      allOf:
+        - $ref: "#/components/schemas/TrainerProfile"
+      properties:
+        username:
+          type: string
+        isActive:
+          type: boolean
+        traineesList:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainerTraineeProfileResponse"
+      example:
+        username: William.Turner
+        firstName: William
+        lastName: Turner
+        specialization: Fitness
+        isActive: true
+        traineesList:
+          - username: John.Doe
+            firstName: John
+            lastName: Doe
+          - username: Dave.Jones
+            firstName: Dave
+            lastName: Jones
+    TrainerProfile:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        specialization:
+          type: string
+    TrainerProfileWithUsername:
+      allOf:
+        - $ref: "#/components/schemas/TrainerProfile"
+      properties:
+        username:
+          type: string
+    TrainerProfileOnlyUsername:
+      type: object
+      properties:
+        username:
+          type: string
+    GetTraineeTrainingsResponse:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/TrainingProfile"
+      properties:
+        trainerName:
+          type: string
+    GetTrainerTrainingsResponse:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/TrainingProfile"
+      properties:
+        traineeName:
+          type: string
+    AddTrainingRequest:
+      type: object
+      properties:
+        traineeUsername:
+          type: string
+        trainerUsername:
+          type: string
+        trainingName:
+          type: string
+        trainingDate:
+          type: string
+          format: date
+        trainingDuration:
+          type: integer
+      example:
+        traineeUsername: John.Doe
+        trainerUsername: Jane.Smith
+        trainingName: Training 1
+        trainingDate: 2023-09-01
+        trainingDuration: 3
+    TrainingProfile:
+      properties:
+        trainingName:
+          type: string
+        trainingDate:
+          type: string
+          format: date
+        trainingType:
+          type: string
+        trainingDuration:
+          type: integer
+      example:
+        firstName: John
+        lastName: Doe
+        dateOfBirth: 2000-01-01
+        address: N.st.
+        isActive: true
+        trainersList:
+          - username: Jane.Smith
+            firstName: Jane
+            lastName: Smith
+            specialization: Yoga
+          - username: William.Turner
+            firstName: William
+            lastName: Turner
+            specialization: Fitness
+    ActivateDeactivateProfileRequest:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+      example:
+        isActive: true
+    GetTrainingTypeResponse:
+      type: object
+      properties:
+        trainingTypeId:
+          type: integer
+        trainingType:
+          type: string
+    UserCredentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      example:
+        username: John.Doe
+        password: PrS7J1qY6I
+    ChangePasswordRequest:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/UserCredentials"
+      properties:
+        newPassword:
+          type: string
+      example:
+        username: John.Doe
+        password: PrS7J1qY6I
+        newPassword: newPass
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      example:
+        code: 403
+        message: Access Forbidden
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        fields:
+          type: array
+          items:
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+      example:
+        code: 400
+        message: Validation error
+        fields:
+          - age: name
+            message: Age can't be negative
+
+  # Parameters list
+  parameters:
+    UsernameParam:
+      name: username
+      in: path
+      description: Entity username
+      required: true
+      schema:
+        type: string
+      example: John.Doe
+    FromDateParam:
+      name: periodFrom
+      in: query
+      description: Training period start date parameter
+      required: false
+      schema:
+        type: string
+        format: date
+      example: 2000-01-01
+    ToDateParam:
+      name: periodTo
+      in: query
+      description: Training period end date period parameter
+      required: false
+      schema:
+        type: string
+        format: date
+      example: 2000-01-01
+    NameParam:
+      name: profileName
+      in: query
+      description: Profile name parameter
+      required: false
+      schema:
+        type: string
+      example: Jane
+    TrainingTypeParam:
+      name: trainingType
+      in: query
+      description: Training type name parameter
+      required: false
+      schema:
+        properties:
+          trainingType:
+            type: string
+      example: Yoga
