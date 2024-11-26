@@ -13,19 +13,18 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "year_summary", schema = "public")
-@Getter
+@Data
 @Builder(toBuilder = true)
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class YearlySummary {
@@ -46,6 +45,8 @@ public class YearlySummary {
     @Column(name = "training_year", nullable = false)
     private Integer year;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "yearSummary", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MonthlySummary> monthlySummaries;
+    private List<MonthlySummary> monthlySummaries = new ArrayList<>();
 }
