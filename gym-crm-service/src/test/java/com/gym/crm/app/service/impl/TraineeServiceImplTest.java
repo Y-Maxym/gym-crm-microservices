@@ -201,7 +201,7 @@ class TraineeServiceImplTest {
     @DisplayName("Test delete trainee by username functionality")
     public void givenUsername_whenDeleteByUsername_thenRepositoryIsCalled() {
         // given
-        String username = "username";
+        String username = EntityTestData.getPersistedTraineeJohnDoe().getUser().getUsername();
 
         doNothing().when(entityValidator).checkEntity(username);
         doNothing().when(repository).deleteByUserUsername(username);
@@ -231,7 +231,7 @@ class TraineeServiceImplTest {
 
         // then
         verify(messageHelper).getMessage(WARN_TRAINEE_WITH_USERNAME_NOT_FOUND, username);
-        verify(repository).deleteByUserUsername(username);
+        verify(repository, never()).deleteByUserUsername(username);
     }
 
     @Test

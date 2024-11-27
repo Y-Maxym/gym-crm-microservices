@@ -1,6 +1,7 @@
 package com.gym.crm.app.it.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gym.crm.app.client.TrainerHoursClient;
 import com.gym.crm.app.it.AbstractItTest;
 import com.gym.crm.app.rest.model.AddTrainingRequest;
 import com.gym.crm.app.rest.model.UserCredentials;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,6 +39,9 @@ public class ItTrainingControllerV1Test extends AbstractItTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private TrainerHoursClient client;
 
     @Autowired
     private ObjectMapper objectMapper;

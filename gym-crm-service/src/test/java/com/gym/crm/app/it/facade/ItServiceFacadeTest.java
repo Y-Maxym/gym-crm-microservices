@@ -1,5 +1,6 @@
 package com.gym.crm.app.it.facade;
 
+import com.gym.crm.app.client.TrainerHoursClient;
 import com.gym.crm.app.entity.Trainee;
 import com.gym.crm.app.entity.Trainer;
 import com.gym.crm.app.entity.Training;
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,9 @@ class ItServiceFacadeTest extends AbstractItTest {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @MockBean
+    private TrainerHoursClient client;
 
     @Autowired
     private UserProfileService userProfileService;

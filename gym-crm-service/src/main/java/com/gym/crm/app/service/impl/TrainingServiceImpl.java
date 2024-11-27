@@ -1,9 +1,12 @@
 package com.gym.crm.app.service.impl;
 
+import com.gym.crm.app.client.TrainerHoursClient;
+import com.gym.crm.app.entity.Trainer;
 import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TrainingRepository;
+import com.gym.crm.app.rest.model.TrainerSummaryRequest;
 import com.gym.crm.app.service.TrainingService;
 import com.gym.crm.app.service.common.EntityValidator;
 import com.gym.crm.app.service.search.TrainingSearchFilter;
@@ -24,6 +27,7 @@ public class TrainingServiceImpl implements TrainingService {
     private final MessageHelper messageHelper;
     private final TrainingRepository repository;
     private final EntityValidator validator;
+    private final TrainerHoursClient client;
 
     @Override
     @Transactional(readOnly = true)
@@ -46,6 +50,22 @@ public class TrainingServiceImpl implements TrainingService {
     public void save(Training training) {
         validator.checkEntity(training);
 
-        repository.save(training);
+        training = repository.save(training);
+
+        notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionTypeEnum.ADD);
+    }
+
+    public void notifyTrainerSummaryService(Training training, TrainerSummaryRequest.ActionTypeEnum operation) {
+        Trainer trainer = training.getTrainer();
+        TrainerSummaryRequest request = new TrainerSummaryRequest()
+                .username(trainer.getUser().getUsername())
+                .firstName(trainer.getUser().getFirstName())
+                .lastName(trainer.getUser().getLastName())
+                .isActive(trainer.getUser().isActive())
+                .trainingDate(training.getTrainingDate())
+                .trainingDuration(training.getTrainingDuration())
+                .actionType(operation);
+
+        client.postTrainerSummary(request);
     }
 }

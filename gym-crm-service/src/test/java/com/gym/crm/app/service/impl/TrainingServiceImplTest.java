@@ -1,5 +1,6 @@
 package com.gym.crm.app.service.impl;
 
+import com.gym.crm.app.client.TrainerHoursClient;
 import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
@@ -28,6 +29,9 @@ class TrainingServiceImplTest {
 
     @Mock
     private MessageHelper messageHelper;
+
+    @Mock
+    private TrainerHoursClient client;
 
     @Mock
     private EntityValidator entityValidator;
@@ -84,6 +88,8 @@ class TrainingServiceImplTest {
         Training training = EntityTestData.getPersistedTrainingEmilyDavis();
 
         doNothing().when(entityValidator).checkEntity(training);
+        given(repository.save(training))
+                .willReturn(training);
 
         // when
         service.save(training);
