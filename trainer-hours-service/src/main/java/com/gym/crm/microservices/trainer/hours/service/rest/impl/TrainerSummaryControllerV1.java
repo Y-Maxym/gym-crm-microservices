@@ -1,8 +1,8 @@
 package com.gym.crm.microservices.trainer.hours.service.rest.impl;
 
-import com.gym.crm.microservices.trainer.hours.service.dto.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.dto.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.rest.TrainerSummaryController;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

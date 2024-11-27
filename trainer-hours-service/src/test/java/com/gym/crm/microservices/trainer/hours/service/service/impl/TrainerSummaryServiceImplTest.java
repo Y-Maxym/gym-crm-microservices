@@ -1,13 +1,12 @@
 package com.gym.crm.microservices.trainer.hours.service.service.impl;
 
-import com.gym.crm.microservices.trainer.hours.service.dto.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.dto.TrainerWorkloadResponse;
-import com.gym.crm.microservices.trainer.hours.service.entity.ActionType;
 import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
 import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import com.gym.crm.microservices.trainer.hours.service.rest.exception.DataNotFoundException;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,9 +41,14 @@ class TrainerSummaryServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        validRequest = new TrainerSummaryRequest(
-                "John.Doe", "John", "Doe", true, LocalDate.of(2024, 5, 1), 120, ActionType.ADD
-        );
+        validRequest = new TrainerSummaryRequest()
+                .username("John.Doe")
+                .firstName("John")
+                .lastName("Doe")
+                .isActive(true)
+                .trainingDate(LocalDate.of(2024, 5, 1))
+                .trainingDuration(120)
+                .actionType(TrainerSummaryRequest.ActionTypeEnum.ADD);
 
         existingTrainerSummary = new TrainerSummary(null, "John.Doe", "John", "Doe", true, new ArrayList<>());
         YearlySummary yearlySummary = new YearlySummary(null, existingTrainerSummary, 2024, new ArrayList<>());
@@ -58,7 +62,7 @@ class TrainerSummaryServiceImplTest {
     @DisplayName("Test sumTrainerSummary updates the monthly summary correctly")
     void givenValidRequest_whenSumTrainerSummary_thenUpdateMonthlySummary() {
         // given
-        given(repository.findByUsername(validRequest.username()))
+        given(repository.findByUsername(validRequest.getUsername()))
                 .willReturn(Optional.of(existingTrainerSummary));
 
         // when
@@ -73,7 +77,7 @@ class TrainerSummaryServiceImplTest {
     @DisplayName("Test sumTrainerSummary creates new trainer if not found")
     void givenNewTrainer_whenSumTrainerSummary_thenCreateNewTrainer() {
         // given
-        given(repository.findByUsername(validRequest.username()))
+        given(repository.findByUsername(validRequest.getUsername()))
                 .willReturn(Optional.empty());
 
         // when
@@ -88,24 +92,24 @@ class TrainerSummaryServiceImplTest {
     @DisplayName("Test getTrainerWorkload returns correct workload")
     void givenValidParams_whenGetTrainerWorkload_thenReturnWorkload() {
         // given
-        given(repository.findWorkloadByParams(validRequest.username(), 2024, 5))
+        given(repository.findWorkloadByParams(validRequest.getUsername(), 2024, 5))
                 .willReturn(120);
 
         // when
-        TrainerWorkloadResponse response = service.getTrainerWorkload(validRequest.username(), 2024, 5);
+        TrainerWorkloadResponse response = service.getTrainerWorkload(validRequest.getUsername(), 2024, 5);
 
         // then
-        assertThat(response.workload()).isEqualTo(120);
+        assertThat(response.getWorkload()).isEqualTo(120);
     }
 
     @Test
     @DisplayName("Test getTrainerWorkload throws exception if no workload found")
     void givenNoWorkload_whenGetTrainerWorkload_thenThrowException() {
         // given
-        given(repository.findWorkloadByParams(validRequest.username(), 2024, 5)).willReturn(null);
+        given(repository.findWorkloadByParams(validRequest.getUsername(), 2024, 5)).willReturn(null);
 
         // when & then
-        assertThatThrownBy(() -> service.getTrainerWorkload(validRequest.username(), 2024, 5))
+        assertThatThrownBy(() -> service.getTrainerWorkload(validRequest.getUsername(), 2024, 5))
                 .isInstanceOf(DataNotFoundException.class)
                 .hasMessageContaining("User information not found");
     }
@@ -114,21 +118,21 @@ class TrainerSummaryServiceImplTest {
     @DisplayName("Test private method getOrCreateTrainerSummary is called when username is found")
     void givenValidRequest_whenGetOrCreateTrainerSummary_thenCallRepository() {
         // given
-        given(repository.findByUsername(validRequest.username()))
+        given(repository.findByUsername(validRequest.getUsername()))
                 .willReturn(Optional.of(existingTrainerSummary));
 
         // when
         service.sumTrainerSummary(validRequest);
 
         // then
-        verify(repository, times(1)).findByUsername(validRequest.username());
+        verify(repository, times(1)).findByUsername(validRequest.getUsername());
     }
 
     @Test
     @DisplayName("Test private method createNewTrainerSummary is called when username is not found")
     void givenNonExistentUsername_whenGetOrCreateTrainerSummary_thenCallCreateNew() {
         // given
-        given(repository.findByUsername(validRequest.username())).willReturn(Optional.empty());
+        given(repository.findByUsername(validRequest.getUsername())).willReturn(Optional.empty());
 
         // when
         service.sumTrainerSummary(validRequest);

@@ -47,6 +47,7 @@ public class YearlySummary {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Builder.Default
     @OneToMany(mappedBy = "yearSummary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MonthlySummary> monthlySummaries = new ArrayList<>();
 }

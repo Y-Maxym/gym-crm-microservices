@@ -1,11 +1,10 @@
 package com.gym.crm.microservices.trainer.hours.service.rest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.microservices.trainer.hours.service.dto.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.dto.TrainerWorkloadResponse;
-import com.gym.crm.microservices.trainer.hours.service.entity.ActionType;
 import com.gym.crm.microservices.trainer.hours.service.rest.exception.DataNotFoundException;
 import com.gym.crm.microservices.trainer.hours.service.rest.exception.GlobalExceptionHandler;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,11 +54,17 @@ class TrainerSummaryControllerV1Test {
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
 
-        request = new TrainerSummaryRequest(
-                "John.Doe", "John", "Doe", true, LocalDate.of(2024, 5, 1), 120, ActionType.ADD
-        );
+        request = new TrainerSummaryRequest()
+                .username("John.Doe")
+                .firstName("John")
+                .lastName("Doe")
+                .isActive(true)
+                .trainingDate(LocalDate.of(2024, 5, 1))
+                .trainingDuration(120)
+                .actionType(TrainerSummaryRequest.ActionTypeEnum.ADD);
 
-        workloadResponse = new TrainerWorkloadResponse(120);
+        workloadResponse = new TrainerWorkloadResponse()
+                .workload(120);
     }
 
     @Test
@@ -84,14 +89,14 @@ class TrainerSummaryControllerV1Test {
     @DisplayName("Test getTrainerWorkload returns OK with correct data")
     void givenValidParams_whenGetTrainerWorkload_thenReturnOkWithWorkload() throws Exception {
         // given
-        BDDMockito.given(service.getTrainerWorkload(request.username(), 2024, 5))
+        BDDMockito.given(service.getTrainerWorkload(request.getUsername(), 2024, 5))
                 .willReturn(workloadResponse);
 
         // when
         ResultActions result = mockMvc.perform(get("/api/v1/trainer-summary")
-                .param("username", request.username())
-                .param("year", String.valueOf(request.trainingDate().getYear()))
-                .param("month", String.valueOf(request.trainingDate().getMonthValue())));
+                .param("username", request.getUsername())
+                .param("year", String.valueOf(request.getTrainingDate().getYear()))
+                .param("month", String.valueOf(request.getTrainingDate().getMonthValue())));
 
         // then
         result.andDo(print())

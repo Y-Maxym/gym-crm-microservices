@@ -45,6 +45,7 @@ public class TrainerSummary {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @Builder.Default
     @OneToMany(mappedBy = "trainerSummary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<YearlySummary> yearlySummaries = new ArrayList<>();
 }
