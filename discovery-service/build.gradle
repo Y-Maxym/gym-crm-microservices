@@ -4,14 +4,23 @@ plugins {
 	id 'io.spring.dependency-management'
 }
 
+ext {
+	springCloudVersion = "2023.0.4"
+}
+
 group = 'com.gym.crm.microservices'
 version = '0.0.1-SNAPSHOT'
-repositories {
-	mavenCentral()
-}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	}
 }
 
 tasks.named('test') {

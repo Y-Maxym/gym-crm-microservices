@@ -4,11 +4,19 @@ plugins {
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
     id 'jacoco'
-    id 'org.openapi.generator' version "$openApiGeneratorVersion"
+    id 'org.openapi.generator' version "7.8.0"
 }
 
 group = 'com.gym.crm.microservices'
 version = '0.0.1-SNAPSHOT'
+
+ext {
+    hibernateCore = "6.6.1.Final"
+    apacheCommons = "1.12.0"
+    mapstructVersion = "1.6.2"
+    jwtVersion = "0.12.6"
+    openApiVersion = "2.6.0"
+}
 
 application {
     mainClassName = 'com.gym.crm.app.CrmGymApplication'
