@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Trainer Hours API
+  version: 1.0.0
+  description: |
+    API for managing trainer's training hours
+servers:
+  - url: https://localhost:8082/api/v1
+    description: Local development environment
+tags:
+  - name: Trainers
+    description: Trainers endpoints
+paths:
+  /trainer-summary:
+    post:
+      tags:
+        - Trainers
+      summary: Sum trainer's training hours
+      description: Sum trainer's training hours
+      operationId: Sum Hours
+      requestBody:
+        description: Sum trainer's training hours
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainerSummaryRequest'
+      responses:
+        200:
+          description: Successful
+    get:
+      tags:
+        - Trainers
+      summary: Get trainer workload
+      description: Get trainer workload
+      operationId: getTrainerWorkload
+      parameters:
+        - $ref: "#/components/parameters/UsernameParam"
+        - $ref: "#/components/parameters/YearParam"
+        - $ref: "#/components/parameters/MonthParam"
+      responses:
+        200:
+          description: Successful retrieval of trainer profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerWorkloadResponse'
+        404:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# Components list
+components:
+  schemas:
+    TrainerSummaryRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        isActive:
+          type: boolean
+        trainingDate:
+          type: string
+          format: date
+        trainingDuration:
+          type: integer
+        actionType:
+          type: string
+          enum:
+            - ADD
+            - DELETE
+      example:
+        username: John.Doe
+        firstName: John
+        lastName: Doe
+        isActive: true
+        trainingDate: 2024-01-01
+        trainingDuration: 2
+        actionType: ADD
+    TrainerWorkloadResponse:
+      type: object
+      properties:
+        workload:
+          type: integer
+      example:
+        workload: 100
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      example:
+        code: 403
+        message: Access Forbidden
+
+  # Parameters list
+  parameters:
+    UsernameParam:
+      name: username
+      in: query
+      description: Entity username
+      required: true
+      schema:
+        type: string
+      example: John.Doe
+    YearParam:
+      name: year
+      in: query
+      description: Training year
+      required: true
+      schema:
+        type: integer
+      example: 2024
+    MonthParam:
+      name: month
+      in: query
+      description: Training month
+      required: true
+      schema:
+        type: integer
+      example: 5
