@@ -1002,6 +1002,42 @@ components:
         username: John.Doe
         password: PrS7J1qY6I
         newPassword: newPass
+    TrainerSummaryRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        isActive:
+          type: boolean
+        trainingDate:
+          type: string
+          format: date
+        trainingDuration:
+          type: integer
+        actionType:
+          type: string
+          enum:
+            - ADD
+            - DELETE
+      example:
+        username: John.Doe
+        firstName: John
+        lastName: Doe
+        isActive: true
+        trainingDate: 2024-01-01
+        trainingDuration: 2
+        actionType: ADD
+    TrainerWorkloadResponse:
+      type: object
+      properties:
+        workload:
+          type: integer
+      example:
+        workload: 100
     ErrorResponse:
       type: object
       properties:

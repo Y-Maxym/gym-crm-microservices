@@ -1,7 +1,9 @@
 spring:
   application:
     name: gym-crm-app
-
+  cloud:
+    discovery:
+      enabled: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     default-schema: public

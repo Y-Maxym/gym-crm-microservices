@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gym-crm-app
+    name: gym-crm-service
   config:
     import: optional:file:.env[.properties]
   profiles:
@@ -22,6 +22,13 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  cloud:
+    discovery:
+      enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
 server:
   port: 8081
