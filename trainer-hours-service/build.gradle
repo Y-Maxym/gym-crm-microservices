@@ -59,7 +59,7 @@ openApiGenerate {
     inputSpec = "$projectDir/src/main/resources/trainer-hours-api.yaml"
     outputDir = layout.buildDirectory.dir("generated").get().asFile.toString()
     generatorName = "spring"
-    modelPackage = "com.gym.crm.microservices.trainer.hours.service.rest.model"
+    modelPackage = "com.gym.crm.microservices.trainer.hours.service.model"
     configOptions = [
             useSpringBoot3: "true",
     ]

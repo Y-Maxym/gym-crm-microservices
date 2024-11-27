@@ -1,10 +1,11 @@
 package com.gym.crm.microservices.trainer.hours.service.rest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.microservices.trainer.hours.service.rest.exception.DataNotFoundException;
+import com.gym.crm.microservices.trainer.hours.service.rest.TrainerSummaryControllerV1;
+import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
 import com.gym.crm.microservices.trainer.hours.service.rest.exception.GlobalExceptionHandler;
-import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

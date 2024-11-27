@@ -1,4 +1,4 @@
-package com.gym.crm.microservices.trainer.hours.service.rest.exception;
+package com.gym.crm.microservices.trainer.hours.service.exception;
 
 public class DataNotFoundException extends RuntimeException {
 

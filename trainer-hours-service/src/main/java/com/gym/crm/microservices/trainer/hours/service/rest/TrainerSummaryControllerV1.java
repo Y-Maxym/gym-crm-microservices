@@ -1,8 +1,7 @@
-package com.gym.crm.microservices.trainer.hours.service.rest.impl;
+package com.gym.crm.microservices.trainer.hours.service.rest;
 
-import com.gym.crm.microservices.trainer.hours.service.rest.TrainerSummaryController;
-import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,11 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/trainer-summary")
 @RequiredArgsConstructor
-public class TrainerSummaryControllerV1 implements TrainerSummaryController {
+public class TrainerSummaryControllerV1 {
 
     private final TrainerSummaryService service;
 
-    @Override
     @PostMapping
     public ResponseEntity<?> sumWorkload(@RequestBody TrainerSummaryRequest request) {
         service.sumTrainerSummary(request);
@@ -29,7 +27,6 @@ public class TrainerSummaryControllerV1 implements TrainerSummaryController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Override
     @GetMapping
     public ResponseEntity<?> getTrainerWorkload(@RequestParam(name = "username") String username,
                                                 @RequestParam(name = "year") Integer year,

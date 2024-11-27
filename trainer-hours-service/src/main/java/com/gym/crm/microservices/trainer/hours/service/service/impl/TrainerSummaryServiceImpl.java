@@ -4,9 +4,9 @@ import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
 import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
-import com.gym.crm.microservices.trainer.hours.service.rest.exception.DataNotFoundException;
-import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
+import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import static java.util.Objects.isNull;
 public class TrainerSummaryServiceImpl implements TrainerSummaryService {
 
     private static final String USER_INFORMATION_NOT_FOUND = "User information not found";
+
     private final TrainerSummaryRepository repository;
 
     @Override
