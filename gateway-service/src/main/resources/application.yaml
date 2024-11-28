@@ -1,3 +1,43 @@
 spring:
   application:
     name: gateway-service
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      routes:
+        - id: gym-crm-service
+          uri: lb://GYM-CRM-SERVICE
+          predicates:
+            - Path=/gym-crm-service/**
+          filters:
+            - AddRequestHeader=X-Request-Gateway, Gateway
+            - RewritePath=/gym-crm-service/(?<segment>.*), /${segment}
+        - id: trainer-hours-service
+          uri: lb://TRAINER-HOURS-SERVICE
+          predicates:
+            - Path=/trainer-hours-service/**
+          filters:
+            - AddRequestHeader=X-Request-Gateway, Gateway
+            - RewritePath=/trainer-hours-service/(?<segment>.*), /${segment}
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

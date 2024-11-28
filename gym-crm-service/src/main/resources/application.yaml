@@ -26,6 +26,10 @@ spring:
     discovery:
       enabled: true
 eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    hostname: ${spring.application.name}
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
