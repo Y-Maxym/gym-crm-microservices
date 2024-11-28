@@ -6,9 +6,9 @@ import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TrainingRepository;
-import com.gym.crm.app.rest.model.TrainerSummaryRequest;
 import com.gym.crm.app.service.TrainingService;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.service.search.TrainingSearchFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,19 +52,21 @@ public class TrainingServiceImpl implements TrainingService {
 
         training = repository.save(training);
 
-        notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionTypeEnum.ADD);
+        notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionType.ADD);
     }
 
-    public void notifyTrainerSummaryService(Training training, TrainerSummaryRequest.ActionTypeEnum operation) {
+    @Override
+    public void notifyTrainerSummaryService(Training training, TrainerSummaryRequest.ActionType operation) {
         Trainer trainer = training.getTrainer();
-        TrainerSummaryRequest request = new TrainerSummaryRequest()
+        TrainerSummaryRequest request = TrainerSummaryRequest.builder()
                 .username(trainer.getUser().getUsername())
                 .firstName(trainer.getUser().getFirstName())
                 .lastName(trainer.getUser().getLastName())
                 .isActive(trainer.getUser().isActive())
                 .trainingDate(training.getTrainingDate())
                 .trainingDuration(training.getTrainingDuration())
-                .actionType(operation);
+                .actionType(operation)
+                .build();
 
         client.postTrainerSummary(request);
     }

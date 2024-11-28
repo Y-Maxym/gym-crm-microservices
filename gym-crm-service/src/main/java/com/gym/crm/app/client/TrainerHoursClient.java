@@ -1,7 +1,7 @@
 package com.gym.crm.app.client;
 
-import com.gym.crm.app.rest.model.TrainerSummaryRequest;
-import com.gym.crm.app.rest.model.TrainerWorkloadResponse;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
+import com.gym.crm.app.service.common.dto.TrainerWorkloadResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

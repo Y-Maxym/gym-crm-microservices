@@ -5,10 +5,10 @@ import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TraineeRepository;
-import com.gym.crm.app.rest.model.TrainerSummaryRequest;
 import com.gym.crm.app.service.TraineeService;
 import com.gym.crm.app.service.TrainingService;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.service.search.TraineeTrainingSearchFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +101,7 @@ public class TraineeServiceImpl implements TraineeService {
         repository.deleteByUserUsername(trainee.getUser().getUsername());
 
         trainee.getTrainings()
-                .forEach(training -> trainingService.notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionTypeEnum.DELETE));
+                .forEach(training -> trainingService.notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionType.DELETE));
 
     }
 }
