@@ -8,6 +8,7 @@ import com.gym.crm.app.repository.TraineeRepository;
 import com.gym.crm.app.service.TraineeService;
 import com.gym.crm.app.service.TrainingService;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.service.search.TraineeTrainingSearchFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -91,10 +92,16 @@ public class TraineeServiceImpl implements TraineeService {
     public void deleteByUsername(String username) {
         validator.checkEntity(username);
 
-        if (repository.findByUserUsername(username).isEmpty()) {
-            log.warn(messageHelper.getMessage(WARN_TRAINEE_WITH_USERNAME_NOT_FOUND, username));
-        }
+        repository.findByUserUsername(username)
+                .ifPresentOrElse(this::deleteAndNotify,
+                        () -> log.warn(messageHelper.getMessage(WARN_TRAINEE_WITH_USERNAME_NOT_FOUND, username)));
+    }
 
-        repository.deleteByUserUsername(username);
+    private void deleteAndNotify(Trainee trainee) {
+        repository.deleteByUserUsername(trainee.getUser().getUsername());
+
+        trainee.getTrainings()
+                .forEach(training -> trainingService.notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionType.DELETE));
+
     }
 }

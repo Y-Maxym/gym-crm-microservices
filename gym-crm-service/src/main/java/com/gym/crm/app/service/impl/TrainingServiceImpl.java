@@ -1,11 +1,14 @@
 package com.gym.crm.app.service.impl;
 
+import com.gym.crm.app.client.TrainerHoursClient;
+import com.gym.crm.app.entity.Trainer;
 import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TrainingRepository;
 import com.gym.crm.app.service.TrainingService;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.service.search.TrainingSearchFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,6 +27,7 @@ public class TrainingServiceImpl implements TrainingService {
     private final MessageHelper messageHelper;
     private final TrainingRepository repository;
     private final EntityValidator validator;
+    private final TrainerHoursClient client;
 
     @Override
     @Transactional(readOnly = true)
@@ -46,6 +50,24 @@ public class TrainingServiceImpl implements TrainingService {
     public void save(Training training) {
         validator.checkEntity(training);
 
-        repository.save(training);
+        training = repository.save(training);
+
+        notifyTrainerSummaryService(training, TrainerSummaryRequest.ActionType.ADD);
+    }
+
+    @Override
+    public void notifyTrainerSummaryService(Training training, TrainerSummaryRequest.ActionType operation) {
+        Trainer trainer = training.getTrainer();
+        TrainerSummaryRequest request = TrainerSummaryRequest.builder()
+                .username(trainer.getUser().getUsername())
+                .firstName(trainer.getUser().getFirstName())
+                .lastName(trainer.getUser().getLastName())
+                .isActive(trainer.getUser().isActive())
+                .trainingDate(training.getTrainingDate())
+                .trainingDuration(training.getTrainingDuration())
+                .actionType(operation)
+                .build();
+
+        client.postTrainerSummary(request);
     }
 }

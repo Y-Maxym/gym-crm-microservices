@@ -1,10 +1,13 @@
 package com.gym.crm.app.service.impl;
 
+import com.gym.crm.app.client.TrainerHoursClient;
+import com.gym.crm.app.entity.Trainer;
 import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TrainingRepository;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.utils.EntityTestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ import java.util.Optional;
 import static com.gym.crm.app.util.Constants.ERROR_TRAINING_WITH_ID_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.only;
@@ -28,6 +32,9 @@ class TrainingServiceImplTest {
 
     @Mock
     private MessageHelper messageHelper;
+
+    @Mock
+    private TrainerHoursClient client;
 
     @Mock
     private EntityValidator entityValidator;
@@ -84,11 +91,46 @@ class TrainingServiceImplTest {
         Training training = EntityTestData.getPersistedTrainingEmilyDavis();
 
         doNothing().when(entityValidator).checkEntity(training);
+        given(repository.save(training))
+                .willReturn(training);
 
         // when
         service.save(training);
 
         // then
         verify(repository, only()).save(training);
+    }
+
+    @Test
+    @DisplayName("Test notifyTrainerSummaryService sends correct TrainerSummaryRequest")
+    public void givenTrainingAndOperation_whenNotifyTrainerSummaryService_thenClientIsCalledWithCorrectRequest() {
+        // given
+        Training training = EntityTestData.getPersistedTrainingDavidBrown();
+        Trainer trainer = training.getTrainer();
+        TrainerSummaryRequest.ActionType actionType = TrainerSummaryRequest.ActionType.ADD;
+
+        TrainerSummaryRequest expectedRequest = TrainerSummaryRequest.builder()
+                .username(trainer.getUser().getUsername())
+                .firstName(trainer.getUser().getFirstName())
+                .lastName(trainer.getUser().getLastName())
+                .isActive(trainer.getUser().isActive())
+                .trainingDate(training.getTrainingDate())
+                .trainingDuration(training.getTrainingDuration())
+                .actionType(actionType)
+                .build();
+
+        // when
+        service.notifyTrainerSummaryService(training, actionType);
+
+        // then
+        verify(client).postTrainerSummary(argThat(request ->
+                request.username().equals(expectedRequest.username()) &&
+                        request.firstName().equals(expectedRequest.firstName()) &&
+                        request.lastName().equals(expectedRequest.lastName()) &&
+                        request.isActive() == expectedRequest.isActive() &&
+                        request.trainingDate().equals(expectedRequest.trainingDate()) &&
+                        request.trainingDuration().equals(expectedRequest.trainingDuration()) &&
+                        request.actionType() == expectedRequest.actionType()
+        ));
     }
 }

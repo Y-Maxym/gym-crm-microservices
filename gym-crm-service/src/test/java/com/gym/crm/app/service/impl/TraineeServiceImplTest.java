@@ -7,6 +7,7 @@ import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TraineeRepository;
 import com.gym.crm.app.service.TrainingService;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.service.search.TraineeTrainingSearchFilter;
 import com.gym.crm.app.service.spectification.TraineeTrainingSpecification;
 import com.gym.crm.app.utils.EntityTestData;
@@ -28,11 +29,14 @@ import static com.gym.crm.app.util.Constants.WARN_TRAINEE_WITH_ID_NOT_FOUND;
 import static com.gym.crm.app.util.Constants.WARN_TRAINEE_WITH_USERNAME_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -198,40 +202,42 @@ class TraineeServiceImplTest {
     }
 
     @Test
-    @DisplayName("Test delete trainee by username functionality")
-    public void givenUsername_whenDeleteByUsername_thenRepositoryIsCalled() {
+    @DisplayName("Test delete trainee by username successfully")
+    public void givenUsername_whenDeleteByUsername_thenRepositoryAndNotificationServiceAreCalled() {
         // given
-        String username = "username";
+        String username = EntityTestData.getPersistedTraineeJohnDoe().getUser().getUsername();
+        Trainee trainee = EntityTestData.getPersistedTraineeJohnDoe();
 
         doNothing().when(entityValidator).checkEntity(username);
+        given(repository.findByUserUsername(username)).willReturn(Optional.of(trainee));
         doNothing().when(repository).deleteByUserUsername(username);
-        given(repository.findByUserUsername(username))
-                .willReturn(Optional.of(EntityTestData.getPersistedTraineeJohnDoe()));
 
         // when
         service.deleteByUsername(username);
 
         // then
-        verify(messageHelper, never()).getMessage(WARN_TRAINEE_WITH_USERNAME_NOT_FOUND, username);
         verify(repository).deleteByUserUsername(username);
+        verify(trainingService, times(trainee.getTrainings().size()))
+                .notifyTrainerSummaryService(any(Training.class), eq(TrainerSummaryRequest.ActionType.DELETE));
+        verify(messageHelper, never()).getMessage(WARN_TRAINEE_WITH_USERNAME_NOT_FOUND, username);
     }
 
     @Test
-    @DisplayName("Test delete trainee by incorrect username functionality")
-    public void givenIncorrectUsername_whenDeleteByUsername_thenLogWarnIsCalled() {
+    @DisplayName("Test delete trainee by non-existing username logs a warning")
+    public void givenNonExistingUsername_whenDeleteByUsername_thenLogWarnIsCalled() {
         // given
-        String username = "username";
+        String username = "nonExistingUsername";
 
         doNothing().when(entityValidator).checkEntity(username);
-        given(repository.findByUserUsername(username))
-                .willReturn(Optional.empty());
+        given(repository.findByUserUsername(username)).willReturn(Optional.empty());
 
         // when
         service.deleteByUsername(username);
 
         // then
+        verify(repository, never()).deleteByUserUsername(username);
+        verify(trainingService, never()).notifyTrainerSummaryService(any(), any());
         verify(messageHelper).getMessage(WARN_TRAINEE_WITH_USERNAME_NOT_FOUND, username);
-        verify(repository).deleteByUserUsername(username);
     }
 
     @Test
