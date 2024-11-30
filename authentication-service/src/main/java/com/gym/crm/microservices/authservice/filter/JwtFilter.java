@@ -1,9 +1,9 @@
-package com.gym.crm.app.filter;
+package com.gym.crm.microservices.authservice.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.app.rest.exception.ErrorCode;
-import com.gym.crm.app.rest.exception.ErrorResponse;
-import com.gym.crm.app.security.JwtService;
+import com.gym.crm.microservices.authservice.exception.ErrorCode;
+import com.gym.crm.microservices.authservice.exception.ErrorResponse;
+import com.gym.crm.microservices.authservice.service.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
