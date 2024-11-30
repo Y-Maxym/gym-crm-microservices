@@ -13,6 +13,10 @@ spring:
           filters:
             - AddRequestHeader=X-Request-Gateway, Gateway
             - RewritePath=/gym-crm-service/(?<segment>.*), /${segment}
+            - name: CircuitBreaker
+              args:
+                name: gymCrmServiceCircuitBreaker
+                fallbackUri: forward:/fallback/gym-crm-service
         - id: trainer-hours-service
           uri: lb://TRAINER-HOURS-SERVICE
           predicates:
@@ -20,6 +24,10 @@ spring:
           filters:
             - AddRequestHeader=X-Request-Gateway, Gateway
             - RewritePath=/trainer-hours-service/(?<segment>.*), /${segment}
+            - name: CircuitBreaker
+              args:
+                name: trainerHoursServiceCircuitBreaker
+                fallbackUri: forward:/fallback/trainer-hours-service
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -38,6 +46,19 @@ eureka:
   client:
     service-url:
       default-zone: http://localhost:8761/eureka/
+resilience4j:
+  circuitbreaker:
+    instances:
+      gymCrmServiceCircuitBreaker:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state:
+          seconds: 5
+      trainerHoursServiceCircuitBreaker:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state:
+          seconds: 5
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

@@ -7,6 +7,8 @@ import com.gym.crm.app.exception.AuthenticationException;
 import com.gym.crm.app.exception.EntityPersistException;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.exception.PasswordOperationException;
+import com.gym.crm.app.exception.ServiceUnavailableException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +24,13 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleFeignException(ServiceUnavailableException e) {
+        ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(error);
+    }
 
     @ExceptionHandler(EntityValidationException.class)
     public ResponseEntity<ErrorResponse> handleException(EntityValidationException e) {
