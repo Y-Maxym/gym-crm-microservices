@@ -1,3 +1,16 @@
 spring:
   application:
     name: admin-service
+  cloud:
+    discovery:
+      enabled: true
+server:
+  port: 8090
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
