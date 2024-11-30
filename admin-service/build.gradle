@@ -4,6 +4,11 @@ plugins {
 	id 'io.spring.dependency-management'
 }
 
+ext {
+	springBootAdminVersion = "3.3.6"
+	springCloudVersion = "2023.0.3"
+}
+
 group = 'com.gym.crm.microservices'
 version = '0.0.1-SNAPSHOT'
 
@@ -13,6 +18,15 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'de.codecentric:spring-boot-admin-starter-server'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "de.codecentric:spring-boot-admin-dependencies:$springBootAdminVersion"
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	}
 }
 
 tasks.named('test') {

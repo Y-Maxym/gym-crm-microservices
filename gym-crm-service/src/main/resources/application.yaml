@@ -25,6 +25,10 @@ spring:
   cloud:
     discovery:
       enabled: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:8090
 eureka:
   instance:
     prefer-ip-address: true
@@ -43,7 +47,6 @@ resilience4j:
           seconds: 5
 server:
   port: 8081
-
 management:
   endpoints:
     web:
