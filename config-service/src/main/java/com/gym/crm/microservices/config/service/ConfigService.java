@@ -2,12 +2,14 @@ package com.gym.crm.microservices.config.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-public class ConfigServiceApplication {
+@EnableConfigServer
+public class ConfigService {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConfigServiceApplication.class, args);
+        SpringApplication.run(ConfigService.class, args);
     }
 
 }
