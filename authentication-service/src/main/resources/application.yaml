@@ -60,6 +60,8 @@ jwt:
     duration: 15m
   refresh:
     duration: 7d
+  secret:
+    key: secret-key-sdfskjflsdjfls-sdflskdjfkl=sdflsjdflsdfjk-=sdf
 
 login:
   block:

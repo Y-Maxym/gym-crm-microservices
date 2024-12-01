@@ -1,6 +1,23 @@
 spring:
   application:
     name: gateway-service
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: local
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
   cloud:
     discovery:
       enabled: true
@@ -82,6 +99,9 @@ resilience4j:
         failure-rate-threshold: 50
         wait-duration-in-open-state:
           seconds: 5
+jwt:
+  secret:
+    key: secret-key-sdfskjflsdjfls-sdflskdjfkl=sdflsjdflsdfjk-=sdf
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
