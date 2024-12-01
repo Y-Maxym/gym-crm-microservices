@@ -1,0 +1,88 @@
+openapi: 3.0.3
+info:
+  title: Auth Service API
+  version: 1.0.0
+tags:
+  - name: Auth
+    description: Auth endpoints
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: Login
+      operationId: login
+      requestBody:
+        required: true
+        description: Login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+      responses:
+        200:
+          description: Successful login
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Access forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# Components list
+components:
+  schemas:
+    UserCredentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      example:
+        username: John.Doe
+        password: PrS7J1qY6I
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      example:
+        code: 403
+        message: Access Forbidden
+    ValidationError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        fields:
+          type: array
+          items:
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+      example:
+        code: 400
+        message: Validation error
+        fields:
+          - age: name
+            message: Age can't be negative

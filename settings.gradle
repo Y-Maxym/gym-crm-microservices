@@ -12,5 +12,5 @@ include 'config-service'
 include 'discovery-service'
 include 'admin-service'
 include 'gym-crm-service'
-include 'auth-service'
+include 'authentication-service'
 
