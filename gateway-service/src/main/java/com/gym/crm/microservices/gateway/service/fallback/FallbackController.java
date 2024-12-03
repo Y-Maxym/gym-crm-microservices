@@ -12,6 +12,8 @@ public class FallbackController {
     private static final String CYM_CRM_SERVICE_UNAVAILABLE_MESSAGE = "Gym CRM Service is currently unavailable. Please try again later.";
     private static final int TRAINER_HOURS_SERVICE_UNAVAILABLE_CODE = 8082;
     private static final String TRAINER_HOURS_SERVICE_UNAVAILABLE_MESSAGE = "Trainer Hours Service is currently unavailable. Please try again later.";
+    private static final int AUTHENTICATION_SERVICE_UNAVAILABLE_CODE = 8083;
+    private static final String AUTHENTICATION_SERVICE_UNAVAILABLE_MESSAGE = "Authentication Service is currently unavailable. Please try again later.";
 
     @RequestMapping("/fallback/gym-crm-service")
     public ResponseEntity<?> fallbackGymCrmService() {
@@ -24,6 +26,14 @@ public class FallbackController {
     @RequestMapping("/fallback/trainer-hours-service")
     public ResponseEntity<?> fallbackTrainerHoursService() {
         ErrorEntity error = new ErrorEntity(TRAINER_HOURS_SERVICE_UNAVAILABLE_CODE, TRAINER_HOURS_SERVICE_UNAVAILABLE_MESSAGE);
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(error);
+    }
+
+    @RequestMapping("/fallback/authentication-service")
+    public ResponseEntity<?> fallbackAuthenticationService() {
+        ErrorEntity error = new ErrorEntity(AUTHENTICATION_SERVICE_UNAVAILABLE_CODE, AUTHENTICATION_SERVICE_UNAVAILABLE_MESSAGE);
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(error);

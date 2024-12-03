@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: authentication-service
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  cloud:
+    discovery:
+      enabled: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:8090
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8083
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    enabled: true
+    groups:
+      enabled: true
+    path: /v1/api-docs
+  swagger-ui:
+    enabled: true
+    path: swagger-ui.html
+    display-request-duration: true
+
+api:
+  base-path: /api/v1
+
+jwt:
+  access:
+    duration: 15m
+  refresh:
+    duration: 7d
+
+login:
+  block:
+    duration: 5m
+    maxAttempts: 3
