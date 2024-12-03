@@ -1,6 +1,8 @@
 package com.gym.crm.microservices.authservice.service;
 
 import com.auth0.jwt.JWT;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gym.crm.microservices.authservice.entity.JwtBlackToken;
 import com.gym.crm.microservices.authservice.exception.AccessTokenException;
 import com.gym.crm.microservices.authservice.repository.JwtBlackTokenRepository;
@@ -37,6 +39,7 @@ public class JwtService {
     private final SecretKey key = Jwts.SIG.HS256.key().build();
     private final JwtBlackTokenRepository blackTokenRepository;
     private final UserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper;
 
     @Value("${jwt.access.duration}")
     private Duration duration;
@@ -153,5 +156,13 @@ public class JwtService {
     public void removeExpiredTokens() {
         LocalDateTime now = LocalDateTime.now();
         blackTokenRepository.deleteByExpiryDateBefore(now);
+    }
+
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+        Object roles = claims.get("roles");
+
+        return objectMapper.convertValue(roles, new TypeReference<>() {
+        });
     }
 }

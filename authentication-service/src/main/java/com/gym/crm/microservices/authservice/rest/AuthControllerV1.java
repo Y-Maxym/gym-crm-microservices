@@ -2,9 +2,9 @@ package com.gym.crm.microservices.authservice.rest;
 
 import com.gym.crm.microservices.authservice.model.UserCredentials;
 import com.gym.crm.microservices.authservice.service.AuthService;
-import com.gym.crm.microservices.authservice.service.common.AuthenticatedUserUtil;
 import com.gym.crm.microservices.authservice.service.JwtService;
 import com.gym.crm.microservices.authservice.service.RefreshTokenService;
+import com.gym.crm.microservices.authservice.service.common.AuthenticatedUserUtil;
 import com.gym.crm.microservices.authservice.validator.UserCredentialsValidator;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -91,7 +92,17 @@ public class AuthControllerV1 {
 
         jwtService.validateToken(authorization);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        String accessToken = jwtService.extractAccessToken(authorization);
+        List<String> roles = jwtService.extractRoles(accessToken);
+        String username = jwtService.extractUsername(accessToken);
+        String rolesHeader = String.join(",", roles);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Username", username);
+        headers.add("X-Roles", rolesHeader);
+        headers.add("Authorization", authorization);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
     }
 
     private void accessToken(String username, HttpHeaders headers) {
