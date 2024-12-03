@@ -2,11 +2,9 @@ package com.gym.crm.microservices.authservice.rest;
 
 import com.gym.crm.microservices.authservice.model.UserCredentials;
 import com.gym.crm.microservices.authservice.service.AuthService;
-import com.gym.crm.microservices.authservice.service.AuthenticatedUserUtil;
+import com.gym.crm.microservices.authservice.service.common.AuthenticatedUserUtil;
 import com.gym.crm.microservices.authservice.service.JwtService;
 import com.gym.crm.microservices.authservice.service.RefreshTokenService;
-import com.gym.crm.microservices.authservice.validator.AccessTokenValidator;
-import com.gym.crm.microservices.authservice.validator.RefreshTokenValidator;
 import com.gym.crm.microservices.authservice.validator.UserCredentialsValidator;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,8 +37,6 @@ public class AuthControllerV1 {
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
     private final UserCredentialsValidator userCredentialsValidator;
-    private final RefreshTokenValidator refreshTokenValidator;
-    private final AccessTokenValidator accessTokenValidator;
 
     @InitBinder("userCredentials")
     public void initUserCredentialsBinder(WebDataBinder binder) {
@@ -60,9 +57,9 @@ public class AuthControllerV1 {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-
+    public ResponseEntity<?> logout(HttpServletRequest request,
+                                    @RequestHeader(value = "Authorization")
+                                    String authorization) {
         invalidateAccessToken(authorization);
         invalidateRefreshToken(request);
 
@@ -74,13 +71,10 @@ public class AuthControllerV1 {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshAccessToken(@CookieValue(name = "refreshToken", required = false)
+    public ResponseEntity<?> refreshAccessToken(@CookieValue("refreshToken")
                                                 String token,
-                                                HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        refreshTokenValidator.validate(token);
-        accessTokenValidator.validate(authorization);
-
+                                                @RequestHeader("Authorization")
+                                                String authorization) {
         invalidateAccessToken(authorization);
 
         String username = refreshTokenService.findUsernameByToken(token);
@@ -89,6 +83,15 @@ public class AuthControllerV1 {
         refreshToken(username, headers);
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateAccessToken(@RequestHeader("Authorization")
+                                                 String authorization) {
+
+        jwtService.validateToken(authorization);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     private void accessToken(String username, HttpHeaders headers) {

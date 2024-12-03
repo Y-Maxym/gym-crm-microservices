@@ -1,4 +1,4 @@
-package com.gym.crm.microservices.authservice.service;
+package com.gym.crm.microservices.authservice.service.common;
 
 import com.gym.crm.microservices.authservice.exception.PasswordOperationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +9,7 @@ import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.HASHED_ERROR;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.HASHED_ERROR;
 
 @Component
 public class PasswordUtils implements PasswordEncoder {
@@ -21,7 +21,6 @@ public class PasswordUtils implements PasswordEncoder {
     private static final String PASSWORD_PATTERN = "%s:%s";
     private static final String SPLIT_REGEX = ":";
     private static final String HASHED_EXCEPTION = "Password cannot be hashed";
-
 
     public String hashPassword(String password) {
         String salt = generateSalt();

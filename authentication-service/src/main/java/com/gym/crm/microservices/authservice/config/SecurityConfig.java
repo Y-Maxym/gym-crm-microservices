@@ -1,9 +1,10 @@
 package com.gym.crm.microservices.authservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.microservices.authservice.exception.ErrorResponse;
-import com.gym.crm.microservices.authservice.filter.JwtFilter;
+import com.gym.crm.microservices.authservice.rest.exception.ErrorResponse;
+import com.gym.crm.microservices.authservice.filter.AuthenticationFilter;
 import com.gym.crm.microservices.authservice.filter.LoginAttemptFilter;
+import com.gym.crm.microservices.authservice.filter.RefreshTokenFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.List;
 
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.UNAUTHORIZED_ERROR;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.UNAUTHORIZED_ERROR;
 
 @Configuration
 @EnableWebSecurity
@@ -29,9 +30,10 @@ import static com.gym.crm.microservices.authservice.exception.ErrorCode.UNAUTHOR
 public class SecurityConfig {
 
     private static final String UNAUTHORIZED_MESSAGE = "Unauthorized";
-    private static final List<String> EXCLUDED_URLS = List.of("/api/v1/login", "/api/v1/refresh");
+    private static final List<String> EXCLUDED_URLS = List.of("/api/v1/login", "/api/v1/refresh", "/api/v1/validate");
 
-    private final JwtFilter jwtFilter;
+    private final RefreshTokenFilter refreshTokenFilter;
+    private final AuthenticationFilter authenticationFilter;
     private final LoginAttemptFilter loginAttemptFilter;
     private final UserDetailsService userDetailsService;
 
@@ -52,7 +54,8 @@ public class SecurityConfig {
                         .authenticationEntryPoint(((request, response, authException) ->
                                 authenticationFailureHandler().onAuthenticationFailure(request, response, authException))))
                 .addFilterBefore(loginAttemptFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(refreshTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

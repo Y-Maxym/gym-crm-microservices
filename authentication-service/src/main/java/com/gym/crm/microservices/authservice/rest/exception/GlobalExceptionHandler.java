@@ -1,23 +1,37 @@
-package com.gym.crm.microservices.authservice.exception;
+package com.gym.crm.microservices.authservice.rest.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import com.gym.crm.microservices.authservice.exception.AccessTokenException;
+import com.gym.crm.microservices.authservice.exception.AuthenticationException;
+import com.gym.crm.microservices.authservice.exception.EntityPersistException;
+import com.gym.crm.microservices.authservice.exception.EntityValidationException;
+import com.gym.crm.microservices.authservice.exception.PasswordOperationException;
+import com.gym.crm.microservices.authservice.exception.ValidationError;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.GENERAL_ERROR;
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.INVALID_FIELD_FORMAT;
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.UNRECOGNIZED_FIELD;
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.VALUE_INSTANTIATION;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.GENERAL_ERROR;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.INVALID_FIELD_FORMAT;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.UNRECOGNIZED_FIELD;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.VALUE_INSTANTIATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(AccessTokenException.class)
+    public ResponseEntity<ErrorResponse> handleException(AccessTokenException e) {
+        ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+
+        return ResponseEntity.status(FORBIDDEN).body(error);
+    }
 
     @ExceptionHandler(EntityValidationException.class)
     public ResponseEntity<ErrorResponse> handleException(EntityValidationException e) {

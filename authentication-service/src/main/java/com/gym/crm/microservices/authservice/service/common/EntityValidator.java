@@ -1,10 +1,10 @@
-package com.gym.crm.microservices.authservice.service;
+package com.gym.crm.microservices.authservice.service.common;
 
 import com.gym.crm.microservices.authservice.exception.EntityValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.NULL_ENTITY;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.NULL_ENTITY;
 import static java.util.Objects.isNull;
 
 

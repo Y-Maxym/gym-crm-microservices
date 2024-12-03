@@ -43,20 +43,11 @@ public final class User implements UserDetails {
     @Column(name = "id", updatable = false, nullable = false, unique = true, insertable = false)
     private final Long id;
 
-    @Column(name = "first_name", nullable = false, length = 50)
-    private final String firstName;
-
-    @Column(name = "last_name", nullable = false, length = 50)
-    private final String lastName;
-
     @Column(name = "username", nullable = false, length = 100)
     private final String username;
 
     @Column(name = "password", nullable = false, length = 1024)
     private final String password;
-
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -2,8 +2,9 @@ package com.gym.crm.microservices.authservice.service;
 
 import com.gym.crm.microservices.authservice.exception.AuthenticationException;
 import com.gym.crm.microservices.authservice.exception.EntityPersistException;
-import com.gym.crm.microservices.authservice.exception.ErrorCode;
 import com.gym.crm.microservices.authservice.model.UserCredentials;
+import com.gym.crm.microservices.authservice.rest.exception.ErrorCode;
+import com.gym.crm.microservices.authservice.service.common.BindingResultsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.AUTHENTICATION_ERROR;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.AUTHENTICATION_ERROR;
 
 @Service
 @RequiredArgsConstructor

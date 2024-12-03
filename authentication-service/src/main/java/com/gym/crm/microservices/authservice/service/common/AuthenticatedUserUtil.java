@@ -1,17 +1,9 @@
-package com.gym.crm.microservices.authservice.service;
+package com.gym.crm.microservices.authservice.service.common;
 
-import com.gym.crm.microservices.authservice.entity.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthenticatedUserUtil {
-
-    public static User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
-    }
 
     public static void addRefreshTokenToCookies(String refreshToken, HttpHeaders headers) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)

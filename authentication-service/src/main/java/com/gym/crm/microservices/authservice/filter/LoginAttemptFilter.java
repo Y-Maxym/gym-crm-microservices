@@ -2,7 +2,7 @@ package com.gym.crm.microservices.authservice.filter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.microservices.authservice.exception.ErrorResponse;
+import com.gym.crm.microservices.authservice.rest.exception.ErrorResponse;
 import com.gym.crm.microservices.authservice.service.LoginAttemptService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.gym.crm.microservices.authservice.exception.ErrorCode.TOO_MANY_FAILED_LOGIN_ATTEMPTS;
+import static com.gym.crm.microservices.authservice.rest.exception.ErrorCode.TOO_MANY_FAILED_LOGIN_ATTEMPTS;
 import static java.util.Objects.isNull;
 
 @Component

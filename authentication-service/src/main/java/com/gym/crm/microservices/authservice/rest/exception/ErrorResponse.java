@@ -1,4 +1,4 @@
-package com.gym.crm.microservices.authservice.exception;
+package com.gym.crm.microservices.authservice.rest.exception;
 
 public record ErrorResponse
         (

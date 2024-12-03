@@ -1,4 +1,4 @@
-package com.gym.crm.microservices.authservice.exception;
+package com.gym.crm.microservices.authservice.rest.exception;
 
 import lombok.Getter;
 
@@ -36,7 +36,8 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(400202),
     REFRESH_TOKEN_NOT_FOUND(400303),
     INVALID_REFRESH_TOKEN(400301),
-    TOO_MANY_FAILED_LOGIN_ATTEMPTS(403002);
+    TOO_MANY_FAILED_LOGIN_ATTEMPTS(403002),
+    INVALID_HEADERS(403003);
 
     ErrorCode(final int code) {
         this.code = code;

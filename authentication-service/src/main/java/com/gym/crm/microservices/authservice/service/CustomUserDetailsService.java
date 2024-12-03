@@ -2,7 +2,7 @@ package com.gym.crm.microservices.authservice.service;
 
 import com.gym.crm.microservices.authservice.exception.AuthenticationException;
 import com.gym.crm.microservices.authservice.exception.EntityValidationException;
-import com.gym.crm.microservices.authservice.exception.ErrorCode;
+import com.gym.crm.microservices.authservice.rest.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

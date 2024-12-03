@@ -2,7 +2,7 @@ package com.gym.crm.microservices.authservice.service;
 
 import com.gym.crm.microservices.authservice.entity.RefreshToken;
 import com.gym.crm.microservices.authservice.entity.User;
-import com.gym.crm.microservices.authservice.exception.ErrorCode;
+import com.gym.crm.microservices.authservice.rest.exception.ErrorCode;
 import com.gym.crm.microservices.authservice.exception.RefreshTokenException;
 import com.gym.crm.microservices.authservice.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;

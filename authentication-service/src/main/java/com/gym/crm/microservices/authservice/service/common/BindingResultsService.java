@@ -1,7 +1,7 @@
-package com.gym.crm.microservices.authservice.service;
+package com.gym.crm.microservices.authservice.service.common;
 
 import com.gym.crm.microservices.authservice.exception.ApplicationException;
-import com.gym.crm.microservices.authservice.exception.FieldError;
+import com.gym.crm.microservices.authservice.rest.exception.FieldError;
 import com.gym.crm.microservices.authservice.util.function.TriFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;

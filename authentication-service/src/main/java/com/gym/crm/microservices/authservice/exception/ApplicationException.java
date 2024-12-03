@@ -1,5 +1,6 @@
 package com.gym.crm.microservices.authservice.exception;
 
+import com.gym.crm.microservices.authservice.rest.exception.FieldError;
 import lombok.Getter;
 
 import java.util.List;
