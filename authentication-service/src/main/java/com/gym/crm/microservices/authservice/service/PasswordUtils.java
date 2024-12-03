@@ -22,7 +22,6 @@ public class PasswordUtils implements PasswordEncoder {
     private static final String SPLIT_REGEX = ":";
     private static final String HASHED_EXCEPTION = "Password cannot be hashed";
 
-
     public String hashPassword(String password) {
         String salt = generateSalt();
         String hashedPassword = hashPassword(password, salt);

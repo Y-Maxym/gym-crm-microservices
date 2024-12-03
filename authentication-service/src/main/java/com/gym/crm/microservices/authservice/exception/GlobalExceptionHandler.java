@@ -13,11 +13,19 @@ import static com.gym.crm.microservices.authservice.exception.ErrorCode.INVALID_
 import static com.gym.crm.microservices.authservice.exception.ErrorCode.UNRECOGNIZED_FIELD;
 import static com.gym.crm.microservices.authservice.exception.ErrorCode.VALUE_INSTANTIATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(AccessTokenException.class)
+    public ResponseEntity<ErrorResponse> handleException(AccessTokenException e) {
+        ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+
+        return ResponseEntity.status(FORBIDDEN).body(error);
+    }
 
     @ExceptionHandler(EntityValidationException.class)
     public ResponseEntity<ErrorResponse> handleException(EntityValidationException e) {

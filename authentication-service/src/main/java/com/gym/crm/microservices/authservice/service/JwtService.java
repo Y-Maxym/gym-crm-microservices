@@ -2,12 +2,19 @@ package com.gym.crm.microservices.authservice.service;
 
 import com.auth0.jwt.JWT;
 import com.gym.crm.microservices.authservice.entity.JwtBlackToken;
+import com.gym.crm.microservices.authservice.exception.AccessTokenException;
+import com.gym.crm.microservices.authservice.exception.ErrorCode;
 import com.gym.crm.microservices.authservice.repository.JwtBlackTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +30,11 @@ import static java.util.Objects.nonNull;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
+    private static final String INVALID_ACCESS_TOKEN = "Invalid access token";
+
     private final SecretKey key = Jwts.SIG.HS256.key().build();
     private final JwtBlackTokenRepository blackTokenRepository;
+    private final UserDetailsService userDetailsService;
 
     @Value("${jwt.access.duration}")
     private Duration duration;
@@ -64,8 +74,46 @@ public class JwtService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean isValid(String token, String username) {
-        return !isTokenBlacklisted(token) && !isTokenExpired(token) && extractUsername(token).equals(username);
+    public void validateToken(String authorization) {
+        if (!isPresentValidAccessToken(authorization)) {
+            throw new AccessTokenException(INVALID_ACCESS_TOKEN, ErrorCode.INVALID_ACCESS_TOKEN.getCode());
+        }
+
+        String token = extractAccessToken(authorization);
+        String username = extractUsername(token);
+
+        if (!isValid(token)) {
+            throw new AccessTokenException(INVALID_ACCESS_TOKEN, ErrorCode.INVALID_ACCESS_TOKEN.getCode());
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (shouldAuthenticate(username)) {
+            authenticateUserWithToken(username, token);
+        }
+    }
+
+    private boolean shouldAuthenticate(String username) {
+        return nonNull(username) && SecurityContextHolder.getContext().getAuthentication() == null;
+    }
+
+    @Transactional(readOnly = true)
+    public void authenticateUserWithToken(String username, String token) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (isValid(token)) {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    userDetails.getPassword(),
+                    userDetails.getAuthorities()
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isValid(String token) {
+        return !isTokenBlacklisted(token) && !isTokenExpired(token);
     }
 
     public boolean isPresentValidAccessToken(String authorization) {
