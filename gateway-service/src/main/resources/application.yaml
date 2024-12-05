@@ -11,6 +11,7 @@ spring:
           predicates:
             - Path=/gym-crm-service/**
           filters:
+            - AuthenticationFilter
             - AddRequestHeader=X-Request-Gateway, Gateway
             - RewritePath=/gym-crm-service/(?<segment>.*), /${segment}
             - name: CircuitBreaker
@@ -22,12 +23,25 @@ spring:
           predicates:
             - Path=/trainer-hours-service/**
           filters:
+            - AuthenticationFilter
             - AddRequestHeader=X-Request-Gateway, Gateway
             - RewritePath=/trainer-hours-service/(?<segment>.*), /${segment}
             - name: CircuitBreaker
               args:
                 name: trainerHoursServiceCircuitBreaker
                 fallbackUri: forward:/fallback/trainer-hours-service
+        - id: authentication-service
+          uri: lb://AUTHENTICATION-SERVICE
+          predicates:
+            - Path=/authentication-service/**
+          filters:
+            - AuthenticationFilter
+            - AddRequestHeader=X-Request-Gateway, Gateway
+            - RewritePath=/authentication-service/(?<segment>.*), /${segment}
+            - name: CircuitBreaker
+              args:
+                name: AuthenticationServiceCircuitBreaker
+                fallbackUri: forward:/fallback/authentication-service
       globalcors:
         corsConfigurations:
           '[/**]':

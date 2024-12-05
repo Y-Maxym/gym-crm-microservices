@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: gym-crm-app
+  cloud:
+    discovery:
+      enabled: false
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
