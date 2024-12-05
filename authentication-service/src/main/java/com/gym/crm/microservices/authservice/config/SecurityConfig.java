@@ -1,10 +1,11 @@
 package com.gym.crm.microservices.authservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.microservices.authservice.rest.exception.ErrorResponse;
 import com.gym.crm.microservices.authservice.filter.AuthenticationFilter;
 import com.gym.crm.microservices.authservice.filter.LoginAttemptFilter;
 import com.gym.crm.microservices.authservice.filter.RefreshTokenFilter;
+import com.gym.crm.microservices.authservice.filter.RestLoggingFilter;
+import com.gym.crm.microservices.authservice.rest.exception.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class SecurityConfig {
     private static final String UNAUTHORIZED_MESSAGE = "Unauthorized";
     private static final List<String> EXCLUDED_URLS = List.of("/api/v1/login", "/api/v1/refresh", "/api/v1/validate");
 
+    private final RestLoggingFilter restLoggingFilter;
     private final RefreshTokenFilter refreshTokenFilter;
     private final AuthenticationFilter authenticationFilter;
     private final LoginAttemptFilter loginAttemptFilter;
@@ -53,6 +55,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(((request, response, authException) ->
                                 authenticationFailureHandler().onAuthenticationFailure(request, response, authException))))
+                .addFilterBefore(restLoggingFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(loginAttemptFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(refreshTokenFilter, UsernamePasswordAuthenticationFilter.class)

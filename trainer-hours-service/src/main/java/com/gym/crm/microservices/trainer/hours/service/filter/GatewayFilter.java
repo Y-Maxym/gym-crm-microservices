@@ -14,7 +14,7 @@ import java.io.IOException;
 import static java.util.Objects.isNull;
 
 @Component
-@Order(1)
+@Order(2)
 public class GatewayFilter extends OncePerRequestFilter {
 
     private static final String GATEWAY_HEADER = "X-Request-Gateway";
