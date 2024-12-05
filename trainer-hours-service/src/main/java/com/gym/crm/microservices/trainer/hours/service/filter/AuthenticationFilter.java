@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
+@Order(3)
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     private static final String INVALID_HEADERS = "Invalid headers";

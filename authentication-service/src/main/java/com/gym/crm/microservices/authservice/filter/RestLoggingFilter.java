@@ -1,7 +1,6 @@
-package com.gym.crm.app.filter;
+package com.gym.crm.microservices.authservice.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.app.logging.MessageHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +16,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static com.gym.crm.app.util.Constants.INFO_REST_LOGGING_FILTER_REQUEST;
-import static com.gym.crm.app.util.Constants.INFO_REST_LOGGING_FILTER_RESPONSE;
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +24,6 @@ public class RestLoggingFilter extends OncePerRequestFilter {
     private static final List<String> EXCLUDED_URLS = List.of("/swagger-ui", "/v1/api-docs", "/actuator/prometheus");
 
     private final ObjectMapper objectMapper;
-    private final MessageHelper messageHelper;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -62,11 +57,11 @@ public class RestLoggingFilter extends OncePerRequestFilter {
             requestBody = hideCredentials(requestBody);
         }
 
-        log.info(messageHelper.getMessage(INFO_REST_LOGGING_FILTER_REQUEST,
+        log.info("REQUEST: method={} uri={}, body={}, transactionId={}",
                 request.getMethod(),
                 request.getRequestURI(),
                 requestBody,
-                transactionId));
+                transactionId);
     }
 
     private void logResponseDetails(ContentCachingResponseWrapper response, String transactionId) throws IOException {
@@ -79,10 +74,10 @@ public class RestLoggingFilter extends OncePerRequestFilter {
             responseBody = hideCredentials(responseBody);
         }
 
-        log.info(messageHelper.getMessage(INFO_REST_LOGGING_FILTER_RESPONSE,
+        log.info("RESPONSE: status={}, body={}, transactionId={}",
                 response.getStatus(),
                 responseBody,
-                transactionId));
+                transactionId);
     }
 
     private boolean hasExcludedUrl(HttpServletRequest request) {

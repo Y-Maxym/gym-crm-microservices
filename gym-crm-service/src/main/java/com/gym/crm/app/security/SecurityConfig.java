@@ -5,7 +5,6 @@ import com.gym.crm.app.filter.JwtFilter;
 import com.gym.crm.app.filter.LoginAttemptFilter;
 import com.gym.crm.app.filter.MetricsFilter;
 import com.gym.crm.app.filter.RestLoggingFilter;
-import com.gym.crm.app.filter.TransactionLoggingFilter;
 import com.gym.crm.app.rest.exception.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,6 @@ public class SecurityConfig {
     private final MetricsFilter metricsFilter;
     private final RestLoggingFilter restLoggingFilter;
     private final LoginAttemptFilter loginAttemptFilter;
-    private final TransactionLoggingFilter transactionLoggingFilter;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -59,7 +57,6 @@ public class SecurityConfig {
                         .authenticationEntryPoint(((request, response, authException) ->
                                 authenticationFailureHandler().onAuthenticationFailure(request, response, authException))))
                 .addFilterBefore(metricsFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(transactionLoggingFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(restLoggingFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(loginAttemptFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
