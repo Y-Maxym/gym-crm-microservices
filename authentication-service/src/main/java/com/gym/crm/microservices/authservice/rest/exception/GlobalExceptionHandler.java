@@ -9,6 +9,7 @@ import com.gym.crm.microservices.authservice.exception.EntityPersistException;
 import com.gym.crm.microservices.authservice.exception.EntityValidationException;
 import com.gym.crm.microservices.authservice.exception.PasswordOperationException;
 import com.gym.crm.microservices.authservice.exception.ValidationError;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,12 +24,14 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessTokenException.class)
     public ResponseEntity<ErrorResponse> handleException(AccessTokenException e) {
         ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+        log.error(e.getMessage(), e);
 
         return ResponseEntity.status(FORBIDDEN).body(error);
     }
@@ -43,6 +46,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleException(AuthenticationException e) {
         ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+        log.error(e.getMessage(), e);
 
         return ResponseEntity.status(UNAUTHORIZED).body(error);
     }
@@ -57,12 +61,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PasswordOperationException.class)
     public ResponseEntity<ErrorResponse> handleException(PasswordOperationException e) {
         ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+        log.error(e.getMessage(), e);
 
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(error);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleException(HttpMessageNotReadableException e) {
+        log.error(e.getMessage(), e);
         return handleHttpMessageNotReadableException(e);
     }
 

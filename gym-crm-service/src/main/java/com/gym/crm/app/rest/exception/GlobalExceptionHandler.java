@@ -8,6 +8,7 @@ import com.gym.crm.app.exception.EntityPersistException;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.exception.PasswordOperationException;
 import com.gym.crm.app.exception.ServiceUnavailableException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,11 +24,13 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ServiceUnavailableException.class)
     public ResponseEntity<ErrorResponse> handleFeignException(ServiceUnavailableException e) {
         ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+        log.error(e.getMessage(), e);
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(error);
     }
@@ -56,12 +59,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PasswordOperationException.class)
     public ResponseEntity<ErrorResponse> handleException(PasswordOperationException e) {
         ErrorResponse error = new ErrorResponse(e.getCode(), e.getMessage());
+        log.error(e.getMessage(), e);
 
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(error);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleException(HttpMessageNotReadableException e) {
+        log.error(e.getMessage(), e);
         return handleHttpMessageNotReadableException(e);
     }
 
