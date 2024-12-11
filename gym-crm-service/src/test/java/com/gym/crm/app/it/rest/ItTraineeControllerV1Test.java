@@ -1,12 +1,12 @@
 package com.gym.crm.app.it.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.app.client.TrainerHoursClient;
 import com.gym.crm.app.it.AbstractItTest;
 import com.gym.crm.app.rest.model.TraineeCreateRequest;
 import com.gym.crm.app.rest.model.TrainerProfileOnlyUsername;
 import com.gym.crm.app.rest.model.UpdateTraineeProfileRequest;
 import com.gym.crm.app.rest.model.UserCredentials;
+import com.gym.crm.app.service.common.MessageSender;
 import com.gym.crm.app.utils.EntityTestData;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +50,7 @@ public class ItTraineeControllerV1Test extends AbstractItTest {
     private MockMvc mvc;
 
     @MockBean
-    private TrainerHoursClient client;
+    private MessageSender messageSender;
 
     @Autowired
     private ObjectMapper objectMapper;

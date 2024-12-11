@@ -1,6 +1,8 @@
 package com.gym.crm.app.security;
 
 import com.gym.crm.app.repository.JwtBlackTokenRepository;
+import io.jsonwebtoken.Jwts;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.crypto.SecretKey;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +28,12 @@ class JwtServiceTest {
 
     @InjectMocks
     private JwtService jwtService;
+
+    @BeforeEach
+    void setUp() {
+        SecretKey secretKey = Jwts.SIG.HS256.key().build();
+        ReflectionTestUtils.setField(jwtService, "key", secretKey);
+    }
 
     @Test
     @DisplayName("Test generate token functionality")

@@ -33,6 +33,13 @@ spring:
     admin:
       client:
         url: http://localhost:8090
+  jms:
+    cache:
+      enabled: false
+  activemq:
+    broker-url: ${BROKER_URL}
+    user: ${BROKER_USER}
+    password: ${BROKER_PASSWORD}
 eureka:
   instance:
     prefer-ip-address: true
@@ -89,6 +96,7 @@ security:
 
 jwt:
   access:
+    secret-key: Z3xP9vY2sD5rF8tQ1mH7kW4jC6bN0oV3xL9gT2zS5qM8hJ1yR4uE6aP7wK3iF2tG
     duration: 15m
   refresh:
     duration: 7d

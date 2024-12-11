@@ -1,12 +1,12 @@
 package com.gym.crm.app.service.impl;
 
-import com.gym.crm.app.client.TrainerHoursClient;
 import com.gym.crm.app.entity.Trainer;
 import com.gym.crm.app.entity.Training;
 import com.gym.crm.app.exception.EntityValidationException;
 import com.gym.crm.app.logging.MessageHelper;
 import com.gym.crm.app.repository.TrainingRepository;
 import com.gym.crm.app.service.common.EntityValidator;
+import com.gym.crm.app.service.common.MessageSender;
 import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 import com.gym.crm.app.utils.EntityTestData;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +34,7 @@ class TrainingServiceImplTest {
     private MessageHelper messageHelper;
 
     @Mock
-    private TrainerHoursClient client;
+    private MessageSender messageSender;
 
     @Mock
     private EntityValidator entityValidator;
@@ -123,7 +123,7 @@ class TrainingServiceImplTest {
         service.notifyTrainerSummaryService(training, actionType);
 
         // then
-        verify(client).postTrainerSummary(argThat(request ->
+        verify(messageSender).sendMessage(argThat(request ->
                 request.username().equals(expectedRequest.username()) &&
                         request.firstName().equals(expectedRequest.firstName()) &&
                         request.lastName().equals(expectedRequest.lastName()) &&

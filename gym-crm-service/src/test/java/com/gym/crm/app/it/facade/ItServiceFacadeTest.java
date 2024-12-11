@@ -1,6 +1,5 @@
 package com.gym.crm.app.it.facade;
 
-import com.gym.crm.app.client.TrainerHoursClient;
 import com.gym.crm.app.entity.Trainee;
 import com.gym.crm.app.entity.Trainer;
 import com.gym.crm.app.entity.Training;
@@ -25,6 +24,7 @@ import com.gym.crm.app.rest.model.TrainerProfileWithUsername;
 import com.gym.crm.app.rest.model.UpdateTraineeProfileRequest;
 import com.gym.crm.app.rest.model.UpdateTrainerProfileRequest;
 import com.gym.crm.app.rest.model.UserCredentials;
+import com.gym.crm.app.service.common.MessageSender;
 import com.gym.crm.app.service.common.UserProfileService;
 import com.gym.crm.app.utils.EntityTestData;
 import jakarta.persistence.EntityManager;
@@ -59,7 +59,7 @@ class ItServiceFacadeTest extends AbstractItTest {
     private EntityManager entityManager;
 
     @MockBean
-    private TrainerHoursClient client;
+    private MessageSender messageSender;
 
     @Autowired
     private UserProfileService userProfileService;
