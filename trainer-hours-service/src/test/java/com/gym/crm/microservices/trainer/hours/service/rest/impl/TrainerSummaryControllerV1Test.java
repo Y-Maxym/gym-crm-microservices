@@ -1,11 +1,11 @@
 package com.gym.crm.microservices.trainer.hours.service.rest.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gym.crm.microservices.trainer.hours.service.rest.TrainerSummaryControllerV1;
 import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
-import com.gym.crm.microservices.trainer.hours.service.rest.exception.GlobalExceptionHandler;
 import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
 import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.rest.TrainerSummaryControllerV1;
+import com.gym.crm.microservices.trainer.hours.service.rest.exception.GlobalExceptionHandler;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,18 +15,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,24 +63,6 @@ class TrainerSummaryControllerV1Test {
 
         workloadResponse = new TrainerWorkloadResponse()
                 .workload(120);
-    }
-
-    @Test
-    @DisplayName("Test sumWorkload returns OK status")
-    void givenValidRequest_whenSumWorkload_thenReturnOk() throws Exception {
-        // given
-        BDDMockito.willDoNothing().given(service).sumTrainerSummary(any(TrainerSummaryRequest.class));
-
-        // when
-        ResultActions result = mockMvc.perform(post("/api/v1/trainer-summary")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request)));
-
-        // then
-        result.andDo(print())
-                .andExpect(status().isOk());
-
-        verify(service, times(1)).sumTrainerSummary(any(TrainerSummaryRequest.class));
     }
 
     @Test

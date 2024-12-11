@@ -3,12 +3,14 @@ package com.gym.crm.microservices.trainer.hours.service.service.impl;
 import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
-import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
 import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
 import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,8 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
 
     @Override
     @Transactional
-    public void sumTrainerSummary(TrainerSummaryRequest request) {
+    @JmsListener(destination = "trainer.summary", containerFactory = "jmsListenerContainerFactory")
+    public void sumTrainerSummary(@Payload TrainerSummaryRequest request) {
         int year = request.getTrainingDate().getYear();
         int month = request.getTrainingDate().getMonthValue();
         int trainingDuration = request.getTrainingDuration();
