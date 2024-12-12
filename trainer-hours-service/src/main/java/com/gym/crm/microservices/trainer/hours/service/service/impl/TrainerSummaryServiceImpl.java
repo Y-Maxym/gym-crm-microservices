@@ -26,8 +26,7 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
 
     @Override
     @Transactional
-    @JmsListener(destination = "trainer.summary", containerFactory = "jmsListenerContainerFactory")
-    public void sumTrainerSummary(@Payload TrainerSummaryRequest request) {
+    public void sumTrainerSummary(TrainerSummaryRequest request) {
         int year = request.getTrainingDate().getYear();
         int month = request.getTrainingDate().getMonthValue();
         int trainingDuration = request.getTrainingDuration();

@@ -31,6 +31,8 @@ public class JmsConfig {
         JmsTemplate template = new JmsTemplate(connectionFactory);
         template.setMessageConverter(jacksonJmsMessageConverter(objectMapper));
         template.setSessionTransacted(true);
+        template.setExplicitQosEnabled(true);
+        template.setTimeToLive(5000);
 
         return template;
     }
