@@ -29,6 +29,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'de.codecentric:spring-boot-admin-starter-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.boot:spring-boot-starter-activemq'
     runtimeOnly 'com.h2database:h2'
 
     implementation 'org.springframework:spring-orm'

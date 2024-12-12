@@ -5,6 +5,8 @@ import com.gym.crm.app.entity.JwtBlackToken;
 import com.gym.crm.app.repository.JwtBlackTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -23,11 +26,19 @@ import static java.util.Objects.nonNull;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    private final SecretKey key = Jwts.SIG.HS256.key().build();
     private final JwtBlackTokenRepository blackTokenRepository;
+
+    @Value("${jwt.access.secret-key}")
+    private String secretKey;
+    private SecretKey key;
 
     @Value("${jwt.access.duration}")
     private Duration duration;
+
+    @PostConstruct
+    private void init() {
+        key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
 
     @Transactional
     public String generateToken(String username) {

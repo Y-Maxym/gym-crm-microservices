@@ -8,7 +8,11 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     default-schema: public
     enabled: true
-
+  jms:
+    cache:
+      enabled: false
+  activemq:
+    broker-url: vm://localhost?broker.persistent=false
   jpa:
     open-in-view: false
     hibernate:

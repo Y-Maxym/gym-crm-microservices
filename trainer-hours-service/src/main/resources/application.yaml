@@ -1,6 +1,8 @@
 server:
   port: 8082
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: trainer-hours-service
   datasource:
@@ -30,6 +32,13 @@ spring:
     admin:
       client:
         url: http://localhost:8090
+  jms:
+    cache:
+      enabled: false
+  activemq:
+    broker-url: ${BROKER_URL}
+    user: ${BROKER_USER}
+    password: ${BROKER_PASSWORD}
 eureka:
   instance:
     prefer-ip-address: true
