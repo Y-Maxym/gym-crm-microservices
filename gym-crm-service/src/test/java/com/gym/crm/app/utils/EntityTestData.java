@@ -16,6 +16,7 @@ import com.gym.crm.app.rest.model.TrainerProfileOnlyUsername;
 import com.gym.crm.app.rest.model.UpdateTraineeProfileRequest;
 import com.gym.crm.app.rest.model.UpdateTrainerProfileRequest;
 import com.gym.crm.app.rest.model.UserCredentials;
+import com.gym.crm.app.service.common.dto.TrainerSummaryRequest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -461,6 +462,18 @@ public class EntityTestData {
         return JwtBlackToken.builder()
                 .expiryDate(LocalDateTime.now().minusDays(7))
                 .token("expired_token")
+                .build();
+    }
+
+    public static TrainerSummaryRequest getValidTrainerSummaryRequest() {
+        return TrainerSummaryRequest.builder()
+                .firstName("firstName")
+                .lastName("lastName")
+                .username("username")
+                .isActive(true)
+                .actionType(TrainerSummaryRequest.ActionType.ADD)
+                .trainingDuration(2)
+                .trainingDate(LocalDate.now())
                 .build();
     }
 }

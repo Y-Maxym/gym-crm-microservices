@@ -18,8 +18,8 @@ services:
       - "8161:8161"
       - "61616:61616"
     environment:
-      - ACTIVEMQ_ADMIN_LOGIN=admin
-      - ACTIVEMQ_ADMIN_PASSWORD=admin
+      - ACTIVEMQ_ADMIN_LOGIN=gcaadmin
+      - ACTIVEMQ_ADMIN_PASSWORD=gcaadmin
   prometheus:
     image: prom/prometheus
     container_name: prometheus
