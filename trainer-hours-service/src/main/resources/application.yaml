@@ -5,22 +5,14 @@ spring:
     import: optional:file:.env[.properties]
   application:
     name: trainer-hours-service
-  datasource:
-    url: jdbc:h2:mem:trainer-hours-db
-    username: ths
-    password: ths
-    driver-class-name: org.h2.Driver
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-  h2:
-    console:
-      enabled: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: trainer_hours
+      username: gca
+      password: gca
+      authentication-database: admin
   cloud:
     discovery:
       enabled: true

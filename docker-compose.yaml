@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  postgres-db:
     image: postgres:alpine3.20
     container_name: postgres_db
     environment:
@@ -12,6 +12,16 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  mongo-db:
+    image: mongo:6.0-rc
+    container_name: mongo_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: gca
+      MONGO_INITDB_ROOT_PASSWORD: gca
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
   activemq:
     image: rmohr/activemq
     container_name: activemq
@@ -33,3 +43,4 @@ services:
 
 volumes:
   postgres_data:
+  mongo_data:

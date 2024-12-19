@@ -3,24 +3,21 @@ package com.gym.crm.microservices.trainer.hours.service.repository;
 import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-class TrainerSummaryRepositoryTest {
+@DataMongoTest
+class TrainerSummaryRepositoryTest extends MongoDbTestContainerConfiguration {
 
     @Autowired
     private TrainerSummaryRepository repository;
-
-    @Autowired
-    private EntityManager entityManager;
 
     @Test
     @DisplayName("Test findByUsername returns TrainerSummary when username exists")
@@ -30,7 +27,7 @@ class TrainerSummaryRepositoryTest {
         trainerSummary.setUsername("trainer1");
         trainerSummary.setFirstName("firstName");
         trainerSummary.setLastName("lastName");
-        entityManager.persist(trainerSummary);
+        repository.save(trainerSummary);
 
         // when
         Optional<TrainerSummary> result = repository.findByUsername("trainer1");
@@ -55,7 +52,7 @@ class TrainerSummaryRepositoryTest {
 
     @Test
     @DisplayName("Test findWorkloadByParams returns correct workload value")
-    void givenUsernameYearAndMonth_whenFindWorkloadByParams_thenReturnCorrectWorkload() {
+    void givenUsernameYearAndMonth_whenFindByParams_thenReturnCorrectWorkload() {
         // given
         YearlySummary yearlySummary = new YearlySummary();
         MonthlySummary monthlySummary = new MonthlySummary();
@@ -64,18 +61,24 @@ class TrainerSummaryRepositoryTest {
         trainerSummary.setUsername("trainer2");
         trainerSummary.setFirstName("firstName");
         trainerSummary.setLastName("lastName");
+
         yearlySummary.setYear(2024);
-        yearlySummary.setTrainerSummary(trainerSummary);
+
         monthlySummary.setMonth(5);
         monthlySummary.setTotalTrainingDuration(120);
-        monthlySummary.setYearSummary(yearlySummary);
+
         yearlySummary.getMonthlySummaries().add(monthlySummary);
         trainerSummary.getYearlySummaries().add(yearlySummary);
 
-        entityManager.persist(trainerSummary);
+        repository.save(trainerSummary);
 
         // when
-        Integer workload = repository.findWorkloadByParams("trainer2", 2024, 5);
+        List<TrainerSummary> result = repository.findByParams("trainer2", 2024, 5);
+        int workload = result.stream()
+                .flatMap(ts -> ts.getYearlySummaries().stream())
+                .flatMap(ys -> ys.getMonthlySummaries().stream())
+                .mapToInt(MonthlySummary::getTotalTrainingDuration)
+                .sum();
 
         // then
         assertThat(workload).isEqualTo(120);
@@ -83,16 +86,21 @@ class TrainerSummaryRepositoryTest {
 
     @Test
     @DisplayName("Test findWorkloadByParams returns null when no matching data found")
-    void givenNoMatchingData_whenFindWorkloadByParams_thenReturnNull() {
+    void givenNoMatchingData_whenFindByParams_thenReturnNull() {
         // given
         String username = "trainer3";
         Integer year = 2024;
         Integer month = 6;
 
         // when
-        Integer workload = repository.findWorkloadByParams(username, year, month);
+        List<TrainerSummary> result = repository.findByParams(username, year, month);
+        int workload = result.stream()
+                .flatMap(ts -> ts.getYearlySummaries().stream())
+                .flatMap(ys -> ys.getMonthlySummaries().stream())
+                .mapToInt(MonthlySummary::getTotalTrainingDuration)
+                .sum();
 
         // then
-        assertThat(workload).isNull();
+        assertThat(workload).isEqualTo(0);
     }
 }
