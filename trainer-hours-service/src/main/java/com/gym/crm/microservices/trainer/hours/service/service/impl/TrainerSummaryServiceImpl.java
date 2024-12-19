@@ -9,12 +9,9 @@ import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResp
 import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import static java.util.Objects.isNull;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +22,6 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
     private final TrainerSummaryRepository repository;
 
     @Override
-    @Transactional
     public void sumTrainerSummary(TrainerSummaryRequest request) {
         int year = request.getTrainingDate().getYear();
         int month = request.getTrainingDate().getMonthValue();
@@ -42,11 +38,17 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public TrainerWorkloadResponse getTrainerWorkload(String username, Integer year, Integer month) {
-        Integer workload = repository.findWorkloadByParams(username, year, month);
+        List<TrainerSummary> summaryList = repository.findByParams(username, year, month);
 
-        if (isNull(workload)) {
+        int workload = summaryList.stream()
+                .flatMap(trainerSummary -> trainerSummary.getYearlySummaries().stream())
+                .flatMap(yearlySummary -> yearlySummary.getMonthlySummaries().stream())
+                .mapToInt(MonthlySummary::getTotalTrainingDuration)
+                .sum();
+
+
+        if (workload == 0) {
             throw new DataNotFoundException(USER_INFORMATION_NOT_FOUND);
         }
 
@@ -94,7 +96,6 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
 
     private YearlySummary createNewYearlySummary(TrainerSummary trainerSummary, int year) {
         YearlySummary yearlySummary = YearlySummary.builder()
-                .trainerSummary(trainerSummary)
                 .year(year)
                 .build();
 
@@ -104,7 +105,6 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
 
     private MonthlySummary createNewMonthlySummary(YearlySummary yearlySummary, int month) {
         MonthlySummary monthlySummary = MonthlySummary.builder()
-                .yearSummary(yearlySummary)
                 .month(month)
                 .totalTrainingDuration(0)
                 .build();
