@@ -3,10 +3,10 @@ package com.gym.crm.microservices.trainer.hours.service.service.impl;
 import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
-import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
 import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
 import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,8 +53,8 @@ class TrainerSummaryServiceImplTest {
                 .actionType(TrainerSummaryRequest.ActionTypeEnum.ADD);
 
         existingTrainerSummary = new TrainerSummary(null, "John.Doe", "John", "Doe", true, new ArrayList<>());
-        YearlySummary yearlySummary = new YearlySummary(null, existingTrainerSummary, 2024, new ArrayList<>());
-        monthlySummary = new MonthlySummary(null, yearlySummary, 5, 0);
+        YearlySummary yearlySummary = new YearlySummary(null, 2024, new ArrayList<>());
+        monthlySummary = new MonthlySummary(null, 5, 0);
 
         existingTrainerSummary.getYearlySummaries().add(yearlySummary);
         yearlySummary.getMonthlySummaries().add(monthlySummary);
@@ -92,11 +94,26 @@ class TrainerSummaryServiceImplTest {
     @DisplayName("Test getTrainerWorkload returns correct workload")
     void givenValidParams_whenGetTrainerWorkload_thenReturnWorkload() {
         // given
-        given(repository.findWorkloadByParams(validRequest.getUsername(), 2024, 5))
-                .willReturn(120);
+        MonthlySummary monthlySummary = new MonthlySummary();
+        monthlySummary.setMonth(5);
+        monthlySummary.setTotalTrainingDuration(120);
+
+        YearlySummary yearlySummary = new YearlySummary();
+        yearlySummary.setYear(2024);
+        yearlySummary.getMonthlySummaries().add(monthlySummary);
+
+        TrainerSummary trainerSummary = new TrainerSummary();
+        trainerSummary.setUsername("trainer2");
+        trainerSummary.setFirstName("firstName");
+        trainerSummary.setLastName("lastName");
+        trainerSummary.getYearlySummaries().add(yearlySummary);
+
+        List<TrainerSummary> trainerSummaries = List.of(trainerSummary);
+
+        given(repository.findByParams("trainer2", 2024, 5)).willReturn(trainerSummaries);
 
         // when
-        TrainerWorkloadResponse response = service.getTrainerWorkload(validRequest.getUsername(), 2024, 5);
+        TrainerWorkloadResponse response = service.getTrainerWorkload("trainer2", 2024, 5);
 
         // then
         assertThat(response.getWorkload()).isEqualTo(120);
@@ -106,7 +123,7 @@ class TrainerSummaryServiceImplTest {
     @DisplayName("Test getTrainerWorkload throws exception if no workload found")
     void givenNoWorkload_whenGetTrainerWorkload_thenThrowException() {
         // given
-        given(repository.findWorkloadByParams(validRequest.getUsername(), 2024, 5)).willReturn(null);
+        given(repository.findByParams(validRequest.getUsername(), 2024, 5)).willReturn(Collections.emptyList());
 
         // when & then
         assertThatThrownBy(() -> service.getTrainerWorkload(validRequest.getUsername(), 2024, 5))
