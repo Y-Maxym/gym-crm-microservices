@@ -4,12 +4,16 @@ import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
 import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
-import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
+import com.gym.crm.microservices.trainer.hours.service.service.common.MessageSender;
+import com.gym.crm.microservices.trainer.hours.service.validator.TrainerSummaryRequestValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -20,9 +24,19 @@ public class TrainerSummaryServiceImpl implements TrainerSummaryService {
     private static final String USER_INFORMATION_NOT_FOUND = "User information not found";
 
     private final TrainerSummaryRepository repository;
+    private final TrainerSummaryRequestValidator validator;
+    private final MessageSender sender;
 
     @Override
     public void sumTrainerSummary(TrainerSummaryRequest request) {
+        BindingResult bindingResult = new BeanPropertyBindingResult(request, "trainerSummary");
+        validator.validate(request, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            sender.sendMessage("ActiveMQ.DLQ", request);
+            return;
+        }
+
         int year = request.getTrainingDate().getYear();
         int month = request.getTrainingDate().getMonthValue();
         int trainingDuration = request.getTrainingDuration();

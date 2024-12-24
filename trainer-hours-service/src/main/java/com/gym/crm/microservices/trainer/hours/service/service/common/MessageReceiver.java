@@ -1,6 +1,6 @@
 package com.gym.crm.microservices.trainer.hours.service.service.common;
 
-import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
 import com.gym.crm.microservices.trainer.hours.service.service.TrainerSummaryService;
 import jakarta.jms.Message;
 import lombok.RequiredArgsConstructor;

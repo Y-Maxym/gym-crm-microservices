@@ -39,7 +39,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Object> {
                 return exchange.getResponse().setComplete();
             }
 
-            String token = request.getHeaders().getFirst("Authorization") == null ? "sdf" : request.getHeaders().getFirst("Authorization");
+            String token = request.getHeaders().getFirst("Authorization");
 
             return client.validateToken(token)
                     .flatMap(response -> {

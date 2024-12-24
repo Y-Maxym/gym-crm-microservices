@@ -13,6 +13,7 @@ spring:
       username: gca
       password: gca
       authentication-database: admin
+      auto-index-creation: true
   cloud:
     discovery:
       enabled: true

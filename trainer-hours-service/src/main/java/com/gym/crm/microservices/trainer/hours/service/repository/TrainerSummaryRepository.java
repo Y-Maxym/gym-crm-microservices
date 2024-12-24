@@ -14,7 +14,7 @@ public interface TrainerSummaryRepository extends MongoRepository<TrainerSummary
 
     Optional<TrainerSummary> findByUsername(String username);
 
-    @Query("{ 'username': ?0, 'yearlySummaries.year': ?1, 'yearlySummaries.monthlySummaries.month': ?2 }")
+    @Query("{ 'username': ?0, 'yearly_summaries.year': ?1, 'yearly_summaries.monthly_summaries.month': ?2 }")
     List<TrainerSummary> findByParams(@Param("username") String username,
                                       @Param("year") Integer year,
                                       @Param("month") Integer month);

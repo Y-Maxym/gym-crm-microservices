@@ -4,18 +4,24 @@ import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;
 import com.gym.crm.microservices.trainer.hours.service.exception.DataNotFoundException;
-import com.gym.crm.microservices.trainer.hours.service.model.TrainerSummaryRequest;
-import com.gym.crm.microservices.trainer.hours.service.model.TrainerWorkloadResponse;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerSummaryRequest;
+import com.gym.crm.microservices.trainer.hours.service.rest.model.TrainerWorkloadResponse;
 import com.gym.crm.microservices.trainer.hours.service.repository.TrainerSummaryRepository;
+import com.gym.crm.microservices.trainer.hours.service.service.common.MessageSender;
+import com.gym.crm.microservices.trainer.hours.service.utils.EntityTestData;
+import com.gym.crm.microservices.trainer.hours.service.validator.TrainerSummaryRequestValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.validation.BeanPropertyBindingResult;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +30,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -34,6 +42,12 @@ class TrainerSummaryServiceImplTest {
     @Mock
     private TrainerSummaryRepository repository;
 
+    @Mock
+    private TrainerSummaryRequestValidator validator;
+
+    @Mock
+    private MessageSender sender;
+
     @InjectMocks
     private TrainerSummaryServiceImpl service;
 
@@ -41,16 +55,12 @@ class TrainerSummaryServiceImplTest {
     private TrainerSummary existingTrainerSummary;
     private MonthlySummary monthlySummary;
 
+    @Captor
+    private ArgumentCaptor<TrainerSummaryRequest> requestCaptor;
+
     @BeforeEach
     void setUp() {
-        validRequest = new TrainerSummaryRequest()
-                .username("John.Doe")
-                .firstName("John")
-                .lastName("Doe")
-                .isActive(true)
-                .trainingDate(LocalDate.of(2024, 5, 1))
-                .trainingDuration(120)
-                .actionType(TrainerSummaryRequest.ActionTypeEnum.ADD);
+        validRequest = EntityTestData.getValidTrainerSummaryRequest();
 
         existingTrainerSummary = new TrainerSummary(null, "John.Doe", "John", "Doe", true, new ArrayList<>());
         YearlySummary yearlySummary = new YearlySummary(null, 2024, new ArrayList<>());
@@ -88,6 +98,26 @@ class TrainerSummaryServiceImplTest {
         // then
         assertThat(existingTrainerSummary.getUsername()).isEqualTo("John.Doe");
         verify(repository, times(1)).save(existingTrainerSummary);
+    }
+
+    @Test
+    @DisplayName("Test validation is invoked and handles errors correctly functionality")
+    void givenInvalidRequestWhenSumTrainerSummaryThenSendToDeadLetterQueue() {
+        // given
+        TrainerSummaryRequest invalidRequest = EntityTestData.getValidTrainerSummaryRequest();
+        invalidRequest.setUsername(null);
+
+        MockedConstruction<BeanPropertyBindingResult> mockConstruction = mockConstruction(BeanPropertyBindingResult.class,
+                (mock, context) -> given(mock.hasErrors()).willReturn(true));
+
+        // when
+        service.sumTrainerSummary(invalidRequest);
+
+        // then
+        verify(sender).sendMessage(eq("ActiveMQ.DLQ"), requestCaptor.capture());
+        assertThat(requestCaptor.getValue().getUsername()).isNull();
+
+        mockConstruction.close();
     }
 
     @Test
