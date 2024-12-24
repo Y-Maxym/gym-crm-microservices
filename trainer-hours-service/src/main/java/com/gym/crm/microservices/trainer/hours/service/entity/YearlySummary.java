@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +28,6 @@ public class YearlySummary {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
+    @Field(name = "monthly_summaries")
     private List<MonthlySummary> monthlySummaries = new ArrayList<>();
 }

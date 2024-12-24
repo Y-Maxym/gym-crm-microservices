@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "trainer_summary")
+@CompoundIndex(def = "{'first_name': 1, 'last_name': 1}")
 public class TrainerSummary {
 
     @Id
@@ -37,5 +39,6 @@ public class TrainerSummary {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Builder.Default
+    @Field(name = "yearly_summaries")
     private List<YearlySummary> yearlySummaries = new ArrayList<>();
 }
