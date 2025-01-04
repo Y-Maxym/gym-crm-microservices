@@ -1,0 +1,21 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+      discovery:
+        enabled: false
+  boot:
+    admin:
+      client:
+        enabled: false
+  jms:
+    cache:
+      enabled: false
+    listener:
+      auto-startup: false
+  activemq:
+    broker-url: vm://localhost?broker.persistent=false
