@@ -124,6 +124,9 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+    if (project.hasProperty('cucumberTags')) {
+        systemProperty 'cucumber.filter.tags', project.getProperty('cucumberTags')
+    }
     finalizedBy jacocoTestReport
 }
 
