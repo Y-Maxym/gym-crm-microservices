@@ -72,26 +72,6 @@ The application is fully covered with unit tests, using **JUnit** and **Mockito*
 - **Line Coverage**: ![Coverage](gym-crm-service/.github/badges/jacoco.svg)
 - **Branch Coverage**: ![Branches](gym-crm-service/.github/badges/branches.svg)
 
-## Running Cucumber Tests with Tag Filtering
-
-Our project organizes Cucumber tests using tags to allow for easy filtering and execution of specific test groups. We primarily use two tags: `@PositiveCase` for tests that should pass under normal conditions, and `@NegativeCase` for tests that are designed to fail or check for error conditions. This tagging strategy facilitates targeted test runs, enabling more efficient testing workflows.
-
-To run a subset of tests marked with specific tags, you can use the following command in the console:
-
-For tests marked with the `@PositiveCase` tag:
-
-```bash
-  ./gradlew :module-name:test -PcucumberTags="@PositiveCase"
-```
-
-And for tests marked with the @NegativeCase tag:
-
-```bash
-./gradlew :module-name:test -PcucumberTags="@NegativeCase"
-```
-
-Replace :module-name with the name of your module. These commands enable you to run all tests associated with the specified tag, making it convenient to focus on specific areas of your application during testing.
-
 ## Testing with Postman
 
 You can use Postman to test the API endpoints of this application. A Postman collection is provided for your convenience.
