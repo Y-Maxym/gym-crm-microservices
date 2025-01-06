@@ -20,7 +20,7 @@ ext {
 }
 
 application {
-    mainClassName = 'com.gym.crm.microservices.authservice.AuthService'
+    mainClassName = 'com.gym.crm.microservices.authservice.AuthenticationService'
 }
 
 

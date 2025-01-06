@@ -1,10 +1,12 @@
 spring:
   application:
     name: discovery-service
+  config:
+    import: optional:file:.env[.properties]
   boot:
     admin:
       client:
-        url: http://localhost:8090
+        url: ${ADMIN_SERVICE_URL}
 server:
   port: 8761
 management:
@@ -23,6 +25,6 @@ eureka:
     enable-self-preservation: false
     eviction-interval-timer-in-ms: 60000
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_HOST_NAME}
   dashboard:
     enabled: true

@@ -1,6 +1,8 @@
 spring:
   application:
     name: gateway-service
+  config:
+    import: optional:file:.env[.properties]
   cloud:
     discovery:
       enabled: true
@@ -55,7 +57,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:8090
+        url: ${ADMIN_SERVICE_URL}
 management:
   endpoints:
     web:
@@ -71,7 +73,7 @@ eureka:
     hostname: ${spring.application.name}
   client:
     service-url:
-      default-zone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL}
 resilience4j:
   circuitbreaker:
     instances:

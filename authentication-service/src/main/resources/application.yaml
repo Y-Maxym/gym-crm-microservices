@@ -4,9 +4,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
+    url: ${POSTGRES_DATASOURCE_URL}
+    username: ${POSTGRES_DATASOURCE_USERNAME}
+    password: ${POSTGRES_DATASOURCE_PASSWORD}
   jpa:
     open-in-view: false
     hibernate:
@@ -21,7 +21,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:8090
+        url: ${ADMIN_SERVICE_URL}
 eureka:
   instance:
     prefer-ip-address: true
@@ -29,7 +29,7 @@ eureka:
     hostname: ${spring.application.name}
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL}
 server:
   port: 8083
 management:
