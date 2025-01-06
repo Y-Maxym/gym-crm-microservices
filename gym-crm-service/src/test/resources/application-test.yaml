@@ -1,6 +1,8 @@
 spring:
   application:
     name: gym-crm-app
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     discovery:
       enabled: false
@@ -11,6 +13,8 @@ spring:
   jms:
     cache:
       enabled: false
+    listener:
+      auto-startup: false
   activemq:
     broker-url: vm://localhost?broker.persistent=false
   jpa:
@@ -21,6 +25,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  boot:
+    admin:
+      client:
+        enabled: false
 
 security:
   password:
