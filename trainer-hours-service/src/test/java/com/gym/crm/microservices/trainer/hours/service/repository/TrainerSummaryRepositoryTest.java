@@ -1,5 +1,6 @@
 package com.gym.crm.microservices.trainer.hours.service.repository;
 
+import com.gym.crm.microservices.trainer.hours.service.config.MongoDbTestContainerConfiguration;
 import com.gym.crm.microservices.trainer.hours.service.entity.MonthlySummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.TrainerSummary;
 import com.gym.crm.microservices.trainer.hours.service.entity.YearlySummary;

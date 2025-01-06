@@ -44,6 +44,12 @@ dependencies {
     testImplementation 'org.testcontainers:mongodb'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'io.cucumber:cucumber-java:7.20.1'
+    testImplementation 'io.cucumber:cucumber-spring:7.20.1'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.20.1'
+    implementation 'org.junit.platform:junit-platform-suite-api:1.11.4'
+    implementation 'org.junit.platform:junit-platform-suite-engine:1.11.4'
 }
 
 jacoco {
@@ -93,6 +99,9 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+    if (project.hasProperty('cucumberTags')) {
+        systemProperty 'cucumber.filter.tags', project.getProperty('cucumberTags')
+    }
     finalizedBy jacocoTestReport
 }
 

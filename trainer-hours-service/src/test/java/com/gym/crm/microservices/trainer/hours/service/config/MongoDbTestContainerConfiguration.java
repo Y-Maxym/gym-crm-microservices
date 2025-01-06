@@ -1,16 +1,19 @@
-package com.gym.crm.microservices.trainer.hours.service.repository;
+package com.gym.crm.microservices.trainer.hours.service.config;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 public abstract class MongoDbTestContainerConfiguration {
 
-    @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+    private static final MongoDBContainer mongoDBContainer;
+
+    static {
+        mongoDBContainer = new MongoDBContainer("mongo:latest");
+        mongoDBContainer.start();
+    }
 
     @DynamicPropertySource
     static void containersProperties(DynamicPropertyRegistry registry) {
