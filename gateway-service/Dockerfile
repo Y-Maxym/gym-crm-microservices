@@ -12,8 +12,19 @@ RUN gradle build || return 0
 COPY . .
 RUN gradle clean build -x test
 
-FROM openjdk:17-jdk-slim
+FROM openjdk:24-ea-17-jdk-slim
 WORKDIR /app
+ENV DOCKERIZE_VERSION v0.8.0
+RUN apt-get update \
+    && apt-get install -y wget \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/*
 COPY --from=build /usr/app/gateway-service/build/libs/*.jar /app/gateway-service.jar
 EXPOSE 8080
-CMD ["java", "-jar", "gateway-service.jar"]
+CMD dockerize \
+    -wait tcp://eureka-service:8761 \
+    -wait tcp://gym-crm-app:8081 \
+    -wait tcp://trainer-hours-service:8082 \
+    -wait tcp://authentication-service:8083 \
+    -timeout 120s \
+    java -jar gateway-service.jar

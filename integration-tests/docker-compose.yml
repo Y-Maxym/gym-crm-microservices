@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   eureka-service:
-    container_name: eureka_service_test
     build:
       context: ../
       dockerfile: discovery-service/Dockerfile
@@ -11,7 +10,6 @@ services:
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_HOST_NAME: docker.host
   gateway-service:
-    container_name: gateway_service_test
     build:
       context: ../
       dockerfile: gateway-service/Dockerfile
@@ -19,25 +17,14 @@ services:
     environment:
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-    depends_on:
-      - eureka-service
-      - gym-crm-app
-      - trainer-hours-service
-      - authentication-service
-    ports:
-      - "8080:8080"
   admin-service:
-    container_name: admin_service_test
     build:
       context: ../
       dockerfile: admin-service/Dockerfile
     image: admin-service:1.0
     environment:
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-    depends_on:
-      - eureka-service
   config-service:
-    container_name: config_service_test
     build:
       context: ../
       dockerfile: config-service/Dockerfile
@@ -45,10 +32,7 @@ services:
     environment:
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-    depends_on:
-      - eureka-service
   authentication-service:
-    container_name: authentication_service_test
     build:
       context: ../
       dockerfile: authentication-service/Dockerfile
@@ -59,11 +43,7 @@ services:
       POSTGRES_DATASOURCE_PASSWORD: gca
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-    depends_on:
-      - eureka-service
-      - postgres-db
   gym-crm-app:
-    container_name: gym_crm_app_test
     build:
       context: ../
       dockerfile: gym-crm-service/Dockerfile
@@ -77,12 +57,7 @@ services:
       BROKER_PASSWORD: gcaadmin
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-    depends_on:
-      - eureka-service
-      - activemq
-      - postgres-db
   trainer-hours-service:
-    container_name: trainer_hours_service_test
     build:
       context: ../
       dockerfile: trainer-hours-service/Dockerfile
@@ -98,13 +73,8 @@ services:
       BROKER_PASSWORD: gcaadmin
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-    depends_on:
-      - eureka-service
-      - activemq
-      - mongo-db
   postgres-db:
     image: postgres:alpine3.20
-    container_name: postgres_db_test
     environment:
       POSTGRES_USER: gca
       POSTGRES_PASSWORD: gca
@@ -113,7 +83,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
   mongo-db:
     image: mongo:6.0-rc
-    container_name: mongo_db_test
     environment:
       MONGO_INITDB_ROOT_USERNAME: gca
       MONGO_INITDB_ROOT_PASSWORD: gca
@@ -121,7 +90,6 @@ services:
       - mongo_data:/data/db
   activemq:
     image: rmohr/activemq
-    container_name: activemq_test
     environment:
       - ACTIVEMQ_ADMIN_LOGIN=gcaadmin
       - ACTIVEMQ_ADMIN_PASSWORD=gcaadmin

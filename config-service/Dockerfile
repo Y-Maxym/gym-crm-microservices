@@ -12,8 +12,16 @@ RUN gradle build || return 0
 COPY . .
 RUN gradle clean build -x test
 
-FROM openjdk:17-jdk-slim
+FROM openjdk:24-ea-17-jdk-slim
 WORKDIR /app
+ENV DOCKERIZE_VERSION v0.8.0
+RUN apt-get update \
+    && apt-get install -y wget \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/*
 COPY --from=build /usr/app/config-service/build/libs/*.jar /app/config-service.jar
 EXPOSE 8100
-CMD ["java", "-jar", "config-service.jar"]
+CMD dockerize \
+    -wait tcp://eureka-service:8761 \
+    -timeout 120s \
+    java -jar config-service.jar
