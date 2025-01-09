@@ -18,6 +18,7 @@ ext {
     openApiVersion = "2.6.0"
     springCloudVersion = "2023.0.3"
     springBootAdminVersion = "3.3.6"
+    cucumberVersion = "7.20.1"
 }
 
 application {
@@ -70,9 +71,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    testImplementation 'io.cucumber:cucumber-java:7.20.1'
-    testImplementation 'io.cucumber:cucumber-spring:7.20.1'
-    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.20.1'
+    testImplementation "io.cucumber:cucumber-spring:$cucumberVersion"
+    testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
     implementation 'org.junit.platform:junit-platform-suite-api:1.11.4'
     implementation 'org.junit.platform:junit-platform-suite-engine:1.11.4'
 }

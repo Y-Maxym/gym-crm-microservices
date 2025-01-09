@@ -7,11 +7,11 @@ spring:
     name: trainer-hours-service
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: trainer_hours
-      username: gca
-      password: gca
+      host: ${MONGO_DB_HOST}
+      port: ${MONGO_DB_PORT}
+      database: ${MONGO_DB_DATABASE}
+      username: ${MONGO_DB_USERNAME}
+      password: ${MONGO_DB_PASSWORD}
       authentication-database: admin
       auto-index-creation: true
   cloud:
@@ -24,7 +24,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:8090
+        url: ${ADMIN_SERVICE_URL}
   jms:
     cache:
       enabled: false
@@ -39,7 +39,7 @@ eureka:
     hostname: ${spring.application.name}
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL}
 management:
   endpoints:
     web:

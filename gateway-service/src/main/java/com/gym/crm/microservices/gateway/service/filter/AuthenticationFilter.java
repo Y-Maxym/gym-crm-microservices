@@ -16,7 +16,9 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Object> {
     private static final List<String> EXCLUDED_URLS = List.of(
             "/authentication-service/api/v1/login",
             "/authentication-service/api/v1/refresh",
-            "/authentication-service/api/v1/validate");
+            "/authentication-service/api/v1/validate",
+            "/gym-crm-service/api/v1/trainees/register",
+            "/gym-crm-service/api/v1/trainers/register");
 
     private final AuthenticationServiceClient client;
 

@@ -1,6 +1,8 @@
 spring:
   application:
     name: admin-service
+  config:
+    import: optional:file:.env[.properties]
   cloud:
     discovery:
       enabled: true
@@ -13,4 +15,4 @@ eureka:
     hostname: ${spring.application.name}
   client:
     service-url:
-      default-zone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL}

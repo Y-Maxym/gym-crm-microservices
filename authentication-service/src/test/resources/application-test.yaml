@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gym-crm-app
+    name: authentication-service-test
   cloud:
     discovery:
       enabled: false
