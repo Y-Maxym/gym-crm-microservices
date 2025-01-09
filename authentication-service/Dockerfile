@@ -24,6 +24,6 @@ EXPOSE 8083
 CMD dockerize \
     -wait tcp://eureka-service:8761 \
     -wait tcp://postgres-db:5432 \
-    -wait tcp://gym-crm-app:8081 \
-    -timeout 120s \
+    -wait tcp://gym-crm-service:8081 \
+    -timeout 600s \
     java -jar authentication-service.jar

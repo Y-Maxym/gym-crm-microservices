@@ -23,5 +23,5 @@ COPY --from=build /usr/app/config-service/build/libs/*.jar /app/config-service.j
 EXPOSE 8100
 CMD dockerize \
     -wait tcp://eureka-service:8761 \
-    -timeout 120s \
+    -timeout 600s \
     java -jar config-service.jar

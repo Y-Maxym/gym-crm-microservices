@@ -25,5 +25,5 @@ CMD dockerize \
     -wait tcp://eureka-service:8761 \
     -wait tcp://activemq:61616 \
     -wait tcp://mongo-db:27017 \
-    -timeout 120s \
+    -timeout 600s \
     java -jar trainer-hours-service.jar

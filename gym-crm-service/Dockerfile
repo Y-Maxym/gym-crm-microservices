@@ -25,5 +25,5 @@ CMD dockerize \
     -wait tcp://eureka-service:8761 \
     -wait tcp://activemq:61616 \
     -wait tcp://postgres-db:5432 \
-    -timeout 120s \
+    -timeout 600s \
     java -jar gym-crm-service.jar

@@ -15,12 +15,12 @@ To run this application, make sure you have the following installed:
 
 1. Clone the project repository:
   ```bash
-   git clone https://github.com/Y-Maxym/gym-crm-app.git
+   git clone https://github.com/Y-Maxym/gym-crm-service.git
   ```
 
 2. Clone the project repository:
 ```bash
-cd gym-crm-app
+cd gym-crm-service
 ```
 
 3. Build the project using Gradle:
@@ -78,7 +78,7 @@ You can use Postman to test the API endpoints of this application. A Postman col
 
 ### Postman Collection
 
-The Postman collection can be found in the `src/test/resources` directory, specifically in the file [Postman Collection](src/test/resources/gym-crm-app.postman_collection.json). To use it:
+The Postman collection can be found in the `src/test/resources` directory, specifically in the file [Postman Collection](src/test/resources/gym-crm-service.postman_collection.json). To use it:
 
 1. Open Postman.
 2. Click on "Import" in the upper left corner.

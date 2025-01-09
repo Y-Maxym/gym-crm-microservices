@@ -23,5 +23,5 @@ COPY --from=build /usr/app/admin-service/build/libs/*.jar /app/admin-service.jar
 EXPOSE 8090
 CMD dockerize \
     -wait tcp://eureka-service:8761 \
-    -timeout 120s \
+    -timeout 600s \
     java -jar admin-service.jar

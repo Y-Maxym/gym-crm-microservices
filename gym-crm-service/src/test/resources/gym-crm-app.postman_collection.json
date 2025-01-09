@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "924b6b4c-273b-40d3-8a3a-0abf887a8792",
-		"name": "gym-crm-app",
+		"name": "gym-crm-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33298427"
 	},

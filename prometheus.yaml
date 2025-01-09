@@ -2,7 +2,7 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'gym-crm-app'
+  - job_name: 'gym-crm-service'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'host.docker.internal:8080' ]

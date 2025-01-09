@@ -43,11 +43,11 @@ services:
       POSTGRES_DATASOURCE_PASSWORD: gca
       ADMIN_SERVICE_URL: http://admin-service:8090
       EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
-  gym-crm-app:
+  gym-crm-service:
     build:
       context: ../
       dockerfile: gym-crm-service/Dockerfile
-    image: gym-crm-app:1.0
+    image: gym-crm-service:1.0
     environment:
       POSTGRES_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/gym-crm
       POSTGRES_DATASOURCE_USERNAME: gca

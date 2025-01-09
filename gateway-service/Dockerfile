@@ -23,8 +23,8 @@ COPY --from=build /usr/app/gateway-service/build/libs/*.jar /app/gateway-service
 EXPOSE 8080
 CMD dockerize \
     -wait tcp://eureka-service:8761 \
-    -wait tcp://gym-crm-app:8081 \
+    -wait tcp://gym-crm-service:8081 \
     -wait tcp://trainer-hours-service:8082 \
     -wait tcp://authentication-service:8083 \
-    -timeout 120s \
+    -timeout 600s \
     java -jar gateway-service.jar
