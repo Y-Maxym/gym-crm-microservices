@@ -45,7 +45,8 @@ To run this project, you need:
 2. Ensure Docker is installed and running on your system.
 3. Use the provided `docker-compose` file to deploy the ancillary services:
    ```sh
-   docker-compose up
+   docker compose build
+   docker compose up -d
    ```
 4. Start each microservice individually:
     - Navigate to the directory of each microservice.
