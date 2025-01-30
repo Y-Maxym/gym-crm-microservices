@@ -1,6 +1,94 @@
 version: '3.8'
 
 services:
+  eureka-service:
+    build:
+      context: .
+      dockerfile: discovery-service/Dockerfile
+    image: eureka-service:1.0
+    environment:
+      ADMIN_SERVICE_URL: http://admin-service:8090
+      EUREKA_HOST_NAME: docker.host
+    networks:
+      - gym_crm_network
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    image: gateway-service:1.0
+    environment:
+      ADMIN_SERVICE_URL: http://admin-service:8090
+      EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
+    ports:
+      - "8080:8080"
+    networks:
+      - gym_crm_network
+  admin-service:
+    build:
+      context: .
+      dockerfile: admin-service/Dockerfile
+    image: admin-service:1.0
+    environment:
+      EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
+    networks:
+      - gym_crm_network
+  config-service:
+    build:
+      context: .
+      dockerfile: config-service/Dockerfile
+    image: config-service:1.0
+    environment:
+      ADMIN_SERVICE_URL: http://admin-service:8090
+      EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
+    networks:
+      - gym_crm_network
+  authentication-service:
+    build:
+      context: .
+      dockerfile: authentication-service/Dockerfile
+    image: authentication-service:1.0
+    environment:
+      POSTGRES_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/gym-crm
+      POSTGRES_DATASOURCE_USERNAME: gca
+      POSTGRES_DATASOURCE_PASSWORD: gca
+      ADMIN_SERVICE_URL: http://admin-service:8090
+      EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
+    networks:
+      - gym_crm_network
+  gym-crm-service:
+    build:
+      context: .
+      dockerfile: gym-crm-service/Dockerfile
+    image: gym-crm-service:1.0
+    environment:
+      POSTGRES_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/gym-crm
+      POSTGRES_DATASOURCE_USERNAME: gca
+      POSTGRES_DATASOURCE_PASSWORD: gca
+      BROKER_URL: tcp://activemq:61616
+      BROKER_USER: gcaadmin
+      BROKER_PASSWORD: gcaadmin
+      ADMIN_SERVICE_URL: http://admin-service:8090
+      EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
+    networks:
+      - gym_crm_network
+  trainer-hours-service:
+    build:
+      context: .
+      dockerfile: trainer-hours-service/Dockerfile
+    image: trainer-hours-service:1.0
+    environment:
+      MONGO_DB_HOST: mongo-db
+      MONGO_DB_PORT: 27017
+      MONGO_DB_DATABASE: trainer_hours
+      MONGO_DB_USERNAME: gca
+      MONGO_DB_PASSWORD: gca
+      BROKER_URL: tcp://activemq:61616
+      BROKER_USER: gcaadmin
+      BROKER_PASSWORD: gcaadmin
+      ADMIN_SERVICE_URL: http://admin-service:8090
+      EUREKA_SERVICE_URL: http://eureka-service:8761/eureka/
+    networks:
+      - gym_crm_network
   postgres-db:
     image: postgres:alpine3.20
     container_name: postgres_db
@@ -8,38 +96,40 @@ services:
       POSTGRES_USER: gca
       POSTGRES_PASSWORD: gca
       POSTGRES_DB: gym-crm
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gym_crm_network
   mongo-db:
     image: mongo:6.0-rc
     container_name: mongo_db
     environment:
       MONGO_INITDB_ROOT_USERNAME: gca
       MONGO_INITDB_ROOT_PASSWORD: gca
-    ports:
-      - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - gym_crm_network
   activemq:
     image: rmohr/activemq
     container_name: activemq
-    ports:
-      - "8161:8161"
-      - "61616:61616"
     environment:
       - ACTIVEMQ_ADMIN_LOGIN=gcaadmin
       - ACTIVEMQ_ADMIN_PASSWORD=gcaadmin
+    networks:
+      - gym_crm_network
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
-    ports:
-      - "9090:9090"
     volumes:
       - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    networks:
+      - gym_crm_network
+
+networks:
+  gym_crm_network:
 
 volumes:
   postgres_data:
