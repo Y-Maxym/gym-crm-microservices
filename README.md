@@ -54,7 +54,7 @@ To run this project, you need:
       ```sh
       ./mvnw clean install
       ```
-      или
+      or
       ```sh
       ./gradlew clean build
       ```
@@ -62,7 +62,7 @@ To run this project, you need:
       ```sh
       java -jar target/your-microservice.jar
       ```
-      или, если используете Gradle,
+      or, if you use Gradle,
       ```sh
       ./gradlew bootRun
       ```
